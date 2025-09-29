@@ -2,3 +2,9 @@
 - [ ] Upgrade the module in Odoo to reload data
 - [ ] Test the filter in Odoo UI
 - [ ] Check Odoo logs for errors
+- [x] Create ITCustom_DraftTransferMO module
+  - [x] Create module directory structure
+  - [x] Create __manifest__.py
+  - [x] Create __init__.py
+  - [x] Create models/__init__.py
+  - [x] Create models/stock_picking.py

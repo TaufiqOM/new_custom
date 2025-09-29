@@ -1,0 +1,4 @@
+- [x] Edit custom/ITCustom_Filter/data/ir_rule.xml to remove group restriction (apply to all users)
+- [ ] Upgrade the module in Odoo to reload data
+- [ ] Test the filter in Odoo UI
+- [ ] Check Odoo logs for errors

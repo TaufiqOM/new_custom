@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <template id="report_mto_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="page" style="font-family: Arial; font-size: 9px; position: relative;">
+                            <!-- Vertical MASTER PO on left -->
+                            <div style="position: absolute; left: 0; top: 20px; writing-mode: vertical-rl; text-orientation: mixed; font-weight: bold; font-size: 14px; transform: rotate(180deg); color: white; background: black; padding: 5px;">
+                                MASTER PO
+                            </div>
+                            
+                            <!-- Header with logo -->
+                            <div style="text-align: right; margin-bottom: 5px;">
+                                <span style="font-size: 24px; font-weight: bold;">OM</span>
+                            </div>
+                            <div style="font-size: 8px; text-align: right; margin-bottom: 8px;">
+                                Mailing Address: Den.Winong Ds.Pohgading Kec.Pasrepan Pasuruan 67170, Indonesia, Tel +62-343-441625, Fax +62-343-441626
+                            </div>
+                            
+                            <!-- Order Info Table -->
+                            <table style="width:100%; border-collapse: collapse; font-size: 9px; margin-bottom: 10px;">
+                                <tr>
+                                    <td style="width:40%; padding:4px; border: 1px solid black;">
+                                        <b>To:</b><br/>
+                                        ID Supplier: OM<br/>
+                                        Name: Omega Mas<br/>
+                                        Alamat: Den. Winong, Ds. Pohgading, Kec. Pasrepan<br/>
+                                        Kota / Kode Pos: Pasuruan 67170<br/>
+                                        Telp. / Fax.: +62.343.441625 +62.343.441626
+                                    </td>
+                                    <td style="width:30%; text-align:center; padding:4px; border: 1px solid black;">
+                                        <b>ID Order</b><br/>
+                                        <t t-esc="o.name"/><br/>
+                                        TDP/NZ FRE
+                                    </td>
+                                    <td style="width:30%; text-align:center; padding:4px; border: 1px solid black;">
+                                        <b>Confirmation Date</b><br/>
+                                        <t t-esc="o.confirmation_date_order" t-options='{"format": "dd MMM yyyy", "widget": "date"}'/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:4px; border: 1px solid black;">
+                                        <b>Note :</b><br/>
+                                        PRODUCT SPECIAL/DUE DATE UPDATE
+                                    </td>
+                                    <td style="text-align:center; padding:4px; border: 1px solid black;"></td>
+                                    <td style="text-align:center; padding:4px; border: 1px solid black;">
+                                        <b>Due Date</b><br/>
+                                        <t t-esc="o.due_date_order" t-options='{"format": "dd MMM yyyy", "widget": "date"}'/>
+                                        Order Due Date Update
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                            <!-- QR Code Placeholder -->
+                            <div style="text-align: right; margin-bottom: 10px;">
+                                <div style="border:1px solid black; width:80px; height:80px; display:inline-block; text-align:center; line-height:80px;">
+                                    QR Code
+                                </div>
+                            </div>
+                            
+                            <!-- Product Table -->
+                            <table style="width:100%; border-collapse: collapse; font-size: 8px;">
+                                <thead>
+                                    <tr style="background:black; color:white;">
+                                        <th style="border:1px solid black; padding:2px;" colspan="2">Product ID</th>
+                                        <th style="border:1px solid black; padding:2px;"></th>
+                                        <th style="border:1px solid black; padding:2px;">Product Name</th>
+                                        <th style="border:1px solid black; padding:2px;">Qty</th>
+                                        <th style="border:1px solid black; padding:2px;">Finish</th>
+                                        <th style="border:1px solid black; padding:2px;">H</th>
+                                        <th style="border:1px solid black; padding:2px;">W</th>
+                                        <th style="border:1px solid black; padding:2px;">D</th>
+                                        <th style="border:1px solid black; padding:2px;">PRODUCT EXTRA INFO TO FACTORY<br/>PRODUCTION</th>
+                                        <th style="border:1px solid black; padding:2px;">Picture</th>
+                                    </tr>
+                                    <tr style="background:lightgray;">
+                                        <th style="border:1px solid black; padding:2px;">ID Cust</th>
+                                        <th style="border:1px solid black; padding:2px;">TDP/NZ Style #</th>
+                                        <th style="border:1px solid black; padding:2px;" colspan="3">Color/Attribute/Size TDP/NZ</th>
+                                        <th style="border:1px solid black; padding:2px;" colspan="5"></th>
+                                        <th style="border:1px solid black; padding:2px;"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="o.order_line" t-as="line">
+                                        <tr>
+                                            <td t-esc="line.product_id.default_code" style="border:1px solid black; padding:2px;"></td>
+                                            <td style="border:1px solid black; padding:2px;"></td>
+                                            <td style="border:1px solid black; padding:2px;"></td>
+                                            <td t-esc="line.name" style="border:1px solid black; padding:2px;"></td>
+                                            <td t-esc="line.product_uom_qty" style="border:1px solid black; text-align:center; padding:2px;"></td>
+                                            <td style="border:1px solid black; padding:2px;"></td>
+                                            <td style="border:1px solid black; padding:2px;"></td>
+                                            <td style="border:1px solid black; padding:2px;"></td>
+                                            <td style="border:1px solid black; padding:2px;"></td>
+                                            <td style="border:1px solid black; padding:2px;"></td>
+                                            <td style="border:1px solid black; text-align:center; padding:2px;">-</td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                            
+                            <!-- Footer -->
+                            <div style="margin-top:8px; font-size:9px;">
+                                <b>Total Qty Order:</b> <t t-esc="sum(o.order_line.mapped('product_uom_qty'))"/>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

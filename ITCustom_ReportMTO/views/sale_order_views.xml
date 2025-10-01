@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_sale_order_mto" model="ir.ui.view">
+            <field name="name">sale.order.form.mto</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <!-- Add custom fields -->
+                <xpath expr="//group[@name='sale_header']" position="inside">
+                    <field name="production_time"/>
+                    <field name="confirmation_date_order"/>
+                    <field name="due_date_order"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

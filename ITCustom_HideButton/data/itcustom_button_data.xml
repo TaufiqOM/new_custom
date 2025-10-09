@@ -17,5 +17,21 @@
             <field name="button_string">Confirm</field>
             <field name="description">Confirm button in Sale Orders</field>
         </record>
+        <!-- Default button record for Approve in purchase.request -->
+        <record id="button_approve_request" model="itcustom.button">
+            <field name="name">Approve Request</field>
+            <field name="model">purchase.request</field>
+            <field name="button_name">button_approved</field>
+            <field name="button_string">Approve</field>
+            <field name="description">Approve button in Purchase Requests</field>
+        </record>
+        <!-- Default button record for Reset in purchase.request -->
+        <record id="button_reset_request" model="itcustom.button">
+            <field name="name">Reset Request</field>
+            <field name="model">purchase.request</field>
+            <field name="button_name">button_draft</field>
+            <field name="button_string">Reset</field>
+            <field name="description">Reset button in Purchase Requests</field>
+        </record>
     </data>
 </odoo>

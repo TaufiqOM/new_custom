@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inherit res.users form view to show related rules -->
+    <record id="view_users_form_inherit_hide_button" model="ir.ui.view">
+        <field name="name">res.users.form.inherit.hide.button</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
+                <page string="Hidden Buttons">
+                    <field name="hide_button_rule_ids" readonly="1">
+                        <list>
+                            <field name="name"/>
+                            <field name="button_name"/>
+                            <field name="model_name"/>
+                            <field name="method_name"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

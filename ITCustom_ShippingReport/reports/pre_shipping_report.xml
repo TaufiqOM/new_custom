@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Report Template -->
+        <template id="report_pre_shipping_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <div class="oe_structure"/>
+                            <div class="row">
+                                <div class="col-12">
+                                    <h2 style="font-weight: bold; margin-bottom: -3px">Pre Shipping Report</h2>
+                                    <h5 style="font-weight: bold; margin-bottom: -3px">TDP/NZ450, 10 November 2025</h5>
+                                    <span>Status Shipping : Admin | Status Container :</span>
+                                </div>
+                            </div>
+                            <table class="table table-borderless mt-4" style="font-family: Arial; letter-spacing:0.15em; table-layout: fixed; width: 100%;">
+                                <thead>
+                                    <tr style="background-color: #181a1c; color: white; font-size:11px;" class="text-center table-dark align-middle p-1">
+                                        <th style="background-color: #181a1c; color: white; font-size:11px; width: 16%;" class="text-center align-middle p-1">Due Date</th>
+                                        <th style="background-color: #181a1c; color: white; font-size:11px; width: 16%;" class="text-center align-middle p-1">Order</th>
+                                        <th style="background-color: #181a1c; color: white; font-size:11px; width: 16%;" class="text-center align-middle p-1">Type</th>
+                                        <th style="background-color: #181a1c; color: white; font-size:11px; width: 16%;" class="text-center align-middle p-1">Color</th>
+                                        <th style="background-color: #181a1c; color: white; font-size:11px; width: 16%;" class="text-center align-middle p-1">Qty</th>
+                                        <th style="background-color: #181a1c; color: white; font-size:11px; width: 16%;" class="text-center align-middle p-1">PRODUCT</th>
+                                        <th style="background-color: #181a1c; color: white; font-size:11px; width: 16%;" class="text-center align-middle p-1">PRODUCT</th>
+                                        <th style="background-color: #181a1c; color: white; font-size:11px; width: 16%;" class="text-center align-middle p-1">PRODUCT</th>
+                                        <th style="background-color: #181a1c; color: white; font-size:11px; width: 16%;" class="text-center align-middle p-1">PRODUCT</th>
+                                    </tr>
+                                </thead>
+                            </table>
+
+                            <div class="oe_structure"/>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

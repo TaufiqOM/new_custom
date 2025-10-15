@@ -17,6 +17,11 @@
                             type="action"
                             class="oe_highlight"
                             invisible="state not in ('in_progress', 'done')"/>
+                    <button name="%(ITCustom_ShippingReport.report_packing_list_action)d"
+                            string="Packing List"
+                            type="action"
+                            class="oe_highlight"
+                            invisible="state not in ('in_progress', 'done')"/>
                 </xpath>
             </field>
         </record>

@@ -14,6 +14,7 @@
     'data': [
         'reports/pre_shipping_report.xml',
         'reports/commercial_invoice.xml',
+        'reports/packing_list.xml',
         'reports/report_actions.xml',
         'views/stock_picking_batch_views.xml',
     ],

@@ -56,5 +56,18 @@
             <field name="binding_model_id" ref="stock_picking_batch.model_stock_picking_batch"/>
             <field name="binding_type">report</field>
         </record>
+
+        <!-- Report Action for Packing List -->
+        <record id="report_packing_list_action" model="ir.actions.report">
+            <field name="name">Packing List</field>
+            <field name="model">stock.picking.batch</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ITCustom_ShippingReport.report_packing_list_template</field>
+            <field name="report_file">ITCustom_ShippingReport.report_packing_list_template</field>
+            <field name="print_report_name">'Packing List - %s' % (object.name)</field>
+            <field name="paperformat_id" ref="ITCustom_ShippingReport.paperformat_commercial_invoice_portrait"/>
+            <field name="binding_model_id" ref="stock_picking_batch.model_stock_picking_batch"/>
+            <field name="binding_type">report</field>
+        </record>
     </data>
 </odoo>

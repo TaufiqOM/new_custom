@@ -12,6 +12,11 @@
                             type="action"
                             class="oe_highlight"
                             invisible="state not in ('in_progress', 'done')"/>
+                    <button name="%(ITCustom_ShippingReport.report_commercial_invoice_action)d"
+                            string="Commercial Invoice"
+                            type="action"
+                            class="oe_highlight"
+                            invisible="state not in ('in_progress', 'done')"/>
                 </xpath>
             </field>
         </record>

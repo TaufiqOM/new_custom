@@ -13,9 +13,15 @@
     'depends': ['stock_picking_batch'],
     'data': [
         'reports/pre_shipping_report.xml',
+        'reports/commercial_invoice.xml',
         'reports/report_actions.xml',
         'views/stock_picking_batch_views.xml',
     ],
+    'assets': {
+        'web.report_assets_pdf': [
+            'ITCustom_ShippingReport/static/src/img/SICS.png',
+        ],
+    },
     'installable': True,
     'application': False,
 }

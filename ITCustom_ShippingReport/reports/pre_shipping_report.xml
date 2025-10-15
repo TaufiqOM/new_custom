@@ -31,6 +31,8 @@
                                         <span>Printed on :
                                             <t t-esc="now.strftime('%d %b %Y %H:%M:%S')"/> (UTC+7)
                                         </span>
+                                        <div style="font-size:20px; font-weight: bold">1 x 40FT
+                                        </div>
                                     </div>
                                 </div>
                             </div>

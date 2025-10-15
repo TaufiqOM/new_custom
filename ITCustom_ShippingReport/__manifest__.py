@@ -17,6 +17,7 @@
         'reports/packing_list.xml',
         'reports/invoice_doc.xml',
         'reports/report_actions.xml',
+        'reports/invoice_m3.xml',
         'views/stock_picking_batch_views.xml',
     ],
     'assets': {

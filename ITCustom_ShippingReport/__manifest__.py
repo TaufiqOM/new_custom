@@ -13,6 +13,7 @@
     'depends': ['stock_picking_batch'],
     'data': [
         'reports/pre_shipping_report.xml',
+        'reports/pre_shipping_no_image_m3.xml',
         'reports/commercial_invoice.xml',
         'reports/packing_list.xml',
         'reports/invoice_doc.xml',

@@ -44,6 +44,19 @@
             <field name="binding_type">report</field>
         </record>
 
+        <!-- Report Action for Pre Shipping No Image With M3 Wood & M3 Pack -->
+        <record id="report_pre_shipping_no_image_m3_action" model="ir.actions.report">
+            <field name="name">Pre Shipping No Image With M3 Wood &amp; M3 Pack</field>
+            <field name="model">stock.picking.batch</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ITCustom_ShippingReport.report_pre_shipping_no_image_m3_template</field>
+            <field name="report_file">ITCustom_ShippingReport.report_pre_shipping_no_image_m3_template</field>
+            <field name="print_report_name">'Pre Shipping No Image With M3 Wood &amp; M3 Pack - %s' % (object.name)</field>
+            <field name="paperformat_id" ref="ITCustom_ShippingReport.paperformat_commercial_invoice_portrait"/>
+            <field name="binding_model_id" ref="stock_picking_batch.model_stock_picking_batch"/>
+            <field name="binding_type">report</field>
+        </record>
+
         <!-- Report Action for Commercial Invoice -->
         <record id="report_commercial_invoice_action" model="ir.actions.report">
             <field name="name">Commercial Invoice</field>

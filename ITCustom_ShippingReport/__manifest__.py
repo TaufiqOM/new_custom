@@ -10,7 +10,7 @@
     'author': 'ITCustom',
     'website': 'https://www.itcustom.my.id/',
     'license': 'LGPL-3',
-    'depends': ['stock_picking_batch'],
+    'depends': ['stock_picking_batch', 'ITCustom_ShippingField'],
     'data': [
         'reports/pre_shipping_report.xml',
         'reports/pre_shipping_no_image_m3.xml',

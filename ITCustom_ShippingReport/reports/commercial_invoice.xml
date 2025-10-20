@@ -45,26 +45,24 @@
                                         <td style="vertical-align: top; border: 1px solid black">
                                             <strong>SHIPPER:</strong>
                                             <br/>
-                                            <span>PT OMEGA MAS</span>
+                                            <span t-esc="doc.company_id.name"/>
                                             <br/>
-                                            <span>DSN. WINONG TIMUR, DS. POHGADING,</span>
+                                            <span t-esc="doc.company_id.street or ''"/>
                                             <br/>
-                                            <span>KEC. PASREPAN, KAB. PASURUAN,</span>
+                                            <span t-esc="(doc.company_id.city or '') + (', ' if doc.company_id.city and doc.company_id.state_id else '') + (doc.company_id.state_id.name or '') + (' ' if doc.company_id.state_id and doc.company_id.zip else '') + (doc.company_id.zip or '')"/>
                                             <br/>
-                                            <span>JAWA TIMUR 67175</span>
-                                            <br/>
-                                            <span>INDONESIA</span>
+                                            <span t-esc="doc.company_id.country_id.name or ''"/>
                                         </td>
                                         <td style="vertical-align: top; border: 1px solid black">
                                             <strong>BUYER:</strong>
                                             <br/>
-                                            <span>The Design Project,</span>
+                                            <span t-esc="doc.buyer_id.name or ''"/>
                                             <br/>
-                                            <span>Home Ideas Centre, 165 The Strand,</span>
+                                            <span t-esc="doc.buyer_id.street or ''"/>
                                             <br/>
-                                            <span>Parnell 1010, Phone 0275202727 - New Zealand</span>
+                                            <span t-esc="(doc.buyer_id.city or '') + (' ' if doc.buyer_id.city and doc.buyer_id.zip else '') + (doc.buyer_id.zip or '') + (', Phone ' if doc.buyer_id.phone else '') + (doc.buyer_id.phone or '') + (' - ' if doc.buyer_id.country_id else '') + (doc.buyer_id.country_id.name or '')"/>
                                             <br/>
-                                            <span>Attn. Marg Farrell</span>
+                                            <span t-esc="(doc.buyer_id.child_ids and doc.buyer_id.child_ids[0].name or '')"/>
                                         </td>
                                         <td style="vertical-align: top; border: 1px solid black">
                                             <strong>INVOICE NO. AND DATE:</strong>
@@ -82,30 +80,46 @@
                                         <td style="vertical-align: top; border: 1px solid black">
                                             <strong>CONSIGNEE:</strong>
                                             <br/>
-                                            <span>The Design Project,</span>
+                                            <span t-esc="doc.consignee_id.name or ''"/>
                                             <br/>
-                                            <span>Home Ideas Centre, 165 The Strand,</span>
+                                            <span t-esc="doc.consignee_id.street or ''"/>
                                             <br/>
-                                            <span>Parnell 1010, Phone 0275202727- New Zealand</span>
+                                            <span t-esc="(doc.consignee_id.city or '') + (' ' if doc.consignee_id.city and doc.consignee_id.zip else '') + (doc.consignee_id.zip or '') + (', Phone ' if doc.consignee_id.phone else '') + (doc.consignee_id.phone or '') + (' - ' if doc.consignee_id.country_id else '') + (doc.consignee_id.country_id.name or '')"/>
                                             <br/>
-                                            <span>Attn. Marg Farrell</span>
+                                            <span t-esc="(doc.consignee_id.child_ids and doc.consignee_id.child_ids[0].name or '')"/>
                                         </td>
                                         <td style="vertical-align: top; border: 1px solid black">
                                             <strong>SHIP TO:</strong>
                                             <br/>
-                                            <span>None</span>
+                                            <span t-esc="doc.ship_to_id.name or ''"/>
+                                            <br/>
+                                            <span t-esc="doc.ship_to_id.street or ''"/>
+                                            <br/>
+                                            <span t-esc="doc.ship_to_id.street2 or ''"/>
+                                            <br/>
+                                            <span t-esc="(doc.ship_to_id.city or '') + (' ' if doc.ship_to_id.city and doc.ship_to_id.zip else '') + (doc.ship_to_id.zip or '') + (', Phone ' if doc.ship_to_id.phone else '') + (doc.ship_to_id.phone or '') + (' - ' if doc.ship_to_id.country_id else '') + (doc.ship_to_id.country_id.name or '')"/>
+                                            <br/>
+                                            <span t-esc="(doc.ship_to_id.child_ids and doc.ship_to_id.child_ids[0].name or '')"/>
                                         </td>
                                         <td style="vertical-align: top; border: 1px solid black">
                                             <strong>NOTIFY PARTY:</strong>
                                             <br/>
-                                            <span>None</span>
+                                            <span t-esc="doc.notify_party_id.name or ''"/>
+                                            <br/>
+                                            <span t-esc="doc.notify_party_id.street or ''"/>
+                                            <br/>
+                                            <span t-esc="(doc.notify_party_id.city or '') + (' ' if doc.notify_party_id.city and doc.notify_party_id.zip else '') + (doc.notify_party_id.zip or '') + (', Phone ' if doc.notify_party_id.phone else '') + (doc.notify_party_id.phone or '') + (' - ' if doc.notify_party_id.country_id else '') + (doc.notify_party_id.country_id.name or '')"/>
+                                            <br/>
+                                            <span t-esc="(doc.notify_party_id.child_ids and doc.notify_party_id.child_ids[0].name or '')"/>
                                         </td>
                                     </tr>
                                     <tr style="width: 30%;">
                                         <td style="vertical-align: top; border: 1px solid black">
-                                            <strong>DEPARTURE DATE:</strong> 20 Jul 25
+                                            <strong>DEPARTURE DATE:</strong>
+                                            <span t-esc="doc.scheduled_date.strftime('%d %b %y') if doc.scheduled_date else ''"/>
                                             <br/>
-                                            <strong>ARRIVAL DATE:</strong> 16 Aug 25
+                                            <strong>ARRIVAL DATE:</strong>
+                                            <span t-esc="doc.arrival_date.strftime('%d %b %y') if doc.arrival_date else ''"/>
                                             <br/>
                                             <strong>COUNTRY OF ORIGIN:</strong> INDONESIA
                                         </td>
@@ -136,33 +150,39 @@
                                 <div class="col-12" style="font-size: 14px; line-height: 1.2;">
                                     <strong>Description of goods:</strong>
                                     <br/>
-                                    <span>1 X 20FT container, contains of:</span>
+                                    <span t-esc="doc.ukuran"/>
+                                    <span> container, contains of:</span>
                                     <br/>
-                                    <span>32 PCS OF Accessories Furniture, Wooden Furniture</span>
+                                    <t t-set="total_qty" t-value="int(sum(doc.picking_ids.mapped('move_ids.quantity')))"/>
+                                    <span t-esc="total_qty"/> PCS OF Accessories Furniture, Wooden Furniture
                                     <br/>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-4" style="font-size: 14px; line-height: 1.2;">
+                                    <!-- Hitung total GW dan NW secara dinamis di sini -->
+                                    <t t-set="total_gw" t-value="sum(sum(move.product_id.gross_weight * move.quantity for move in picking.move_ids) for picking in doc.picking_ids)"/>
+                                    <t t-set="total_nw" t-value="sum(sum(move.product_id.weight * move.quantity for move in picking.move_ids) for picking in doc.picking_ids)"/>
                                     <span>
-                                        <strong>GW:</strong> 2,737.50 KGS
+                                        <strong>GW:</strong> <span t-esc="'%.2f' % total_gw"/> KGS
                                     </span>
                                     <br/>
                                     <span>
-                                        <strong>No. Cont.:</strong> KKTU8135237
+                                        <strong>No. Cont.:</strong> <span t-esc="doc.no_count"/>
                                     </span>
                                 </div>
                                 <div class="col-8">
                                     <span>
-                                        <strong>NW:</strong> 2,610.25 KGS
+                                        <strong>NW:</strong> <span t-esc="'%.2f' % total_nw"/> KGS
                                     </span>
                                     <br/>
                                     <span>
-                                        <strong>Seal:</strong> IDA720297
+                                        <strong>Seal:</strong> <span t-esc="doc.seal"/>
                                     </span>
                                 </div>
                             </div>
                             <table class="table table-borderless table-sm mt-3" style="font-size: 12px; border-collapse: collapse; line-height: 1.1;">
+                                <t t-set="currency" t-value="doc.picking_ids and doc.picking_ids[0].sale_id and doc.picking_ids[0].sale_id.pricelist_id.currency_id.name or 'NZD'"/>
                                 <thead>
                                     <tr class="text-center"  style="background-color: #181a1c;">
                                         <th class="text-center" style="border: 1px solid white; vertical-align: middle; color: white" rowspan="2">
@@ -191,7 +211,9 @@
                                     <tr class="text-center" style="background-color: #181a1c;">
                                         <td style="border: 1px solid white; color: white">GW</td>
                                         <td style="border: 1px solid white; color: white">NW</td>
-                                        <td style="border: 1px solid white; color: white">NZD</td>
+                                        <td style="border: 1px solid white; color: white">
+                                            <span t-esc="currency"/>
+                                        </td>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -199,31 +221,59 @@
                                         <td colspan="8" style="height: 0.5px">
                                         </td>
                                     </tr>
+                                    <t t-set="hs_descriptions" t-value="{'4420.19.00': 'Accessories Furniture', '9403.60.90': 'Wooden Furniture'}"/>
+                                    <t t-set="hs_groups" t-value="{}"/>
+                                    <t t-foreach="doc.picking_ids" t-as="picking">
+                                        <t t-foreach="picking.move_ids" t-as="move">
+                                            <t t-set="hs_code" t-value="move.product_id.hs_code or 'N/A'"/>
+                                            <t t-if="hs_code not in hs_groups">
+                                                <t t-set="hs_groups" t-value="dict(hs_groups, **{hs_code: {'qty': 0, 'gw': 0, 'nw': 0, 'price': 0}})"/>
+                                            </t>
+                                            <t t-set="sale_lines" t-value="move.picking_id.sale_id and move.picking_id.sale_id.order_line.filtered(lambda l: l.product_id == move.product_id) or []"/>
+                                            <t t-set="price" t-value="sum(sale_lines.mapped('price_subtotal')) if sale_lines else (move.product_id.list_price * move.quantity)"/>
+                                            <t t-set="hs_groups" t-value="dict(hs_groups, **{hs_code: {'qty': hs_groups[hs_code]['qty'] + move.quantity, 'gw': hs_groups[hs_code]['gw'] + (move.product_id.gross_weight * move.quantity), 'nw': hs_groups[hs_code]['nw'] + (move.product_id.weight * move.quantity), 'price': hs_groups[hs_code]['price'] + price}})"/>
+                                        </t>
+                                    </t>
                                     <tr style="background-color: #a0a0a0;">
                                         <td colspan="8" style="border: 1px solid black">
-                                            <span style="font-size: 14px; font-weight: bold">TDP/NZ445 | IDA720297</span>
+                                            <span style="font-size: 14px; font-weight: bold">
+                                                <span t-esc="doc.description"/></span>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black; font-weight: bold" class="text-center">1</td>
-                                        <td style="border: 1px solid black; font-weight: bold">Accessories Furniture | 4420.19.00</td>
-                                        <td style="border: 1px solid black; font-weight: bold" class="text-center">Furniture</td>
-                                        <td style="border: 1px solid black; font-weight: bold" class="text-center">Wood</td>
-                                        <td style="border: 1px solid black; font-weight: bold" class="text-center">20</td>
-                                        <td style="border: 1px solid black; font-weight: bold; text-align: right">59.50</td>
-                                        <td style="border: 1px solid black; font-weight: bold; text-align: right">46.25</td>
-                                        <td style="border: 1px solid black; font-weight: bold; text-align: right">1,133.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black; font-weight: bold" class="text-center">2</td>
-                                        <td style="border: 1px solid black; font-weight: bold">Wooden Furniture | 9403.60.90</td>
-                                        <td style="border: 1px solid black; font-weight: bold" class="text-center">Furniture</td>
-                                        <td style="border: 1px solid black; font-weight: bold" class="text-center">Wood</td>
-                                        <td style="border: 1px solid black; font-weight: bold" class="text-center">12</td>
-                                        <td style="border: 1px solid black; font-weight: bold; text-align: right">2,678.00</td>
-                                        <td style="border: 1px solid black; font-weight: bold; text-align: right">2,564.00</td>
-                                        <td style="border: 1px solid black; font-weight: bold; text-align: right">24,660.50</td>
-                                    </tr>
+                                    <t t-set="sorted_hs_groups" t-value="sorted(hs_groups.items(), key=lambda item: hs_descriptions.get(item[0], 'Furniture'))"/>
+                                    <t t-set="counter" t-value="1"/>
+                                    <t t-foreach="sorted_hs_groups" t-as="hs_item">
+                                        <t t-set="hs_code" t-value="hs_item[0]"/>
+                                        <t t-set="dynamic_description" t-value="hs_descriptions.get(hs_code, 'Furniture')"/>
+                                        <tr>
+                                            <td style="border: 1px solid black; font-weight: bold" class="text-center">
+                                                <span t-esc="counter"/>
+                                            </td>
+                                            <td style="border: 1px solid black; font-weight: bold">
+                                                <span t-esc="dynamic_description"/> |
+                                                <span t-esc="hs_code"/>
+                                            </td>
+                                            <td style="border: 1px solid black; font-weight: bold" class="text-center">Furniture</td>
+                                            <td style="border: 1px solid black; font-weight: bold" class="text-center">Wood</td>
+                                            <td style="border: 1px solid black; font-weight: bold" class="text-center">
+                                                <span t-esc="int(hs_groups[hs_code]['qty'])"/>
+                                            </td>
+                                            <td style="border: 1px solid black; font-weight: bold; text-align: right">
+                                                <span t-esc="'%.2f' % hs_groups[hs_code]['gw']"/>
+                                            </td>
+                                            <td style="border: 1px solid black; font-weight: bold; text-align: right">
+                                                <span t-esc="'%.2f' % hs_groups[hs_code]['nw']"/>
+                                            </td>
+                                            <td style="border: 1px solid black; font-weight: bold; text-align: right">
+                                                <span t-esc="'%.2f' % hs_groups[hs_code]['price']"/>
+                                            </td>
+                                        </tr>
+                                        <t t-set="counter" t-value="counter + 1"/>
+                                    </t>
+                                    <t t-set="total_qty" t-value="int(sum(hs_groups[hs]['qty'] for hs in hs_groups))"/>
+                                    <t t-set="total_gw" t-value="sum(hs_groups[hs]['gw'] for hs in hs_groups)"/>
+                                    <t t-set="total_nw" t-value="sum(hs_groups[hs]['nw'] for hs in hs_groups)"/>
+                                    <t t-set="total_price" t-value="sum(hs_groups[hs]['price'] for hs in hs_groups)"/>
                                     <tr>
                                         <td colspan="8" style="height: 0.5px">
                                         </td>
@@ -232,10 +282,18 @@
                                 <tfoot>
                                     <tr style="font-weight: bold; background-color: #a0a0a0;">
                                         <td  style="border: 1px solid black; font-weight: bold; text-align: right" colspan="4">TOTAL AMOUNT :</td>
-                                        <td style="border: 1px solid black; font-weight: bold" class="text-center">32</td>
-                                        <td style="border: 1px solid black; font-weight: bold; text-align: right">2,737.50</td>
-                                        <td style="border: 1px solid black; font-weight: bold; text-align: right">2,610.25</td>
-                                        <td style="border: 1px solid black; font-weight: bold; text-align: right">25,793.50</td>
+                                        <td style="border: 1px solid black; font-weight: bold" class="text-center">
+                                            <span t-esc="total_qty"/>
+                                        </td>
+                                        <td style="border: 1px solid black; font-weight: bold; text-align: right">
+                                            <span t-esc="'%.2f' % total_gw"/>
+                                        </td>
+                                        <td style="border: 1px solid black; font-weight: bold; text-align: right">
+                                            <span t-esc="'%.2f' % total_nw"/>
+                                        </td>
+                                        <td style="border: 1px solid black; font-weight: bold; text-align: right">
+                                            <span t-esc="'%.2f' % total_price"/>
+                                        </td>
                                     </tr>
                                 </tfoot>
                             </table>

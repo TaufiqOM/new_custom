@@ -1,0 +1,3 @@
+- [x] Add new button "Invoice Doc Buyer - BERN" in stock_picking_batch_views.xml
+- [x] Add new report action for Invoice Doc Buyer - BERN in report_actions.xml
+- [x] Create empty template file invoice_doc_buyer_bern.xml

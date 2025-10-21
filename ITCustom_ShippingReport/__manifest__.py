@@ -19,7 +19,8 @@
         'reports/invoice_doc.xml',
         'reports/report_actions.xml',
         'reports/invoice_m3.xml',
-        'views/stock_picking_batch_views.xml',
+        'reports/invoice_doc_buyer_bern.xml',
+        'reports/packing_list_buyer_bern.xml',
     ],
     'assets': {
         'web.report_assets_pdf': [

@@ -108,5 +108,31 @@
             <field name="binding_model_id" ref="stock_picking_batch.model_stock_picking_batch"/>
             <field name="binding_type">report</field>
         </record>
+
+        <!-- Report Action for Invoice Doc Buyer - BERN -->
+        <record id="report_invoice_doc_buyer_bern_action" model="ir.actions.report">
+            <field name="name">Invoice Doc Buyer - BERN</field>
+            <field name="model">stock.picking.batch</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ITCustom_ShippingReport.report_invoice_doc_buyer_bern_template</field>
+            <field name="report_file">ITCustom_ShippingReport.report_invoice_doc_buyer_bern_template</field>
+            <field name="print_report_name">'Invoice Doc Buyer - BERN - %s' % (object.name)</field>
+            <field name="paperformat_id" ref="ITCustom_ShippingReport.paperformat_commercial_invoice_portrait"/>
+            <field name="binding_model_id" ref="stock_picking_batch.model_stock_picking_batch"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <!-- Report Action for Packing List BUYER - BERN -->
+        <record id="report_packing_list_buyer_bern_action" model="ir.actions.report">
+            <field name="name">Packing List BUYER - BERN</field>
+            <field name="model">stock.picking.batch</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ITCustom_ShippingReport.report_packing_list_buyer_bern_template</field>
+            <field name="report_file">ITCustom_ShippingReport.report_packing_list_buyer_bern_template</field>
+            <field name="print_report_name">'Packing List BUYER - BERN - %s' % (object.name)</field>
+            <field name="paperformat_id" ref="ITCustom_ShippingReport.paperformat_commercial_invoice_portrait"/>
+            <field name="binding_model_id" ref="stock_picking_batch.model_stock_picking_batch"/>
+            <field name="binding_type">report</field>
+        </record>
     </data>
 </odoo>

@@ -22,6 +22,11 @@
                             type="action"
                             class="oe_highlight"
                             invisible="state not in ('in_progress', 'done')"/>
+                    <button name="%(ITCustom_ShippingReport.report_invoice_doc_buyer_bern_action)d"
+                            string="Invoice Doc Buyer - BERN"
+                            type="action"
+                            class="oe_highlight"
+                            invisible="state not in ('in_progress', 'done')"/>
                 </xpath>
             </field>
         </record>

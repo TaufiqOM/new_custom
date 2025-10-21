@@ -51,14 +51,14 @@
                             <div class="row">
                                 <div class="col-6" style="line-height: 1.2; font-size: 15px; font-weight: bold">
                                     <strong>TO:</strong>
-                                    <br/>
-                                    <span>The Design Project,</span>
-                                    <br/>
-                                    <span>Home Ideas Centre, 165 The Strand,</span>
-                                    <br/>
-                                    <span>Parnell 1010, Phone 0275202727 - New Zealand</span>
-                                    <br/>
-                                    <span>Attn. Marg Farrell</span>
+<br/>
+                                            <span t-esc="doc.buyer_id.name or ''"/>
+                                            <br/>
+                                            <span t-esc="doc.buyer_id.street or ''"/>
+                                            <br/>
+                                            <span t-esc="(doc.buyer_id.city or '') + (' ' if doc.buyer_id.city and doc.buyer_id.zip else '') + (doc.buyer_id.zip or '') + (', Phone ' if doc.buyer_id.phone else '') + (doc.buyer_id.phone or '') + (' - ' if doc.buyer_id.country_id else '') + (doc.buyer_id.country_id.name or '')"/>
+                                            <br/>
+                                            <span t-esc="(doc.buyer_id.child_ids and doc.buyer_id.child_ids[0].name or '')"/>
                                 </div>
                             </div>
                             <table class="table table-borderless table-sm mt-3" style="font-size: 12px; border-collapse: collapse; line-height: 1.1;">
@@ -78,227 +78,62 @@
                                         <td colspan="7" style="height: 1px">
                                         </td>
                                     </tr>
-                                    <tr style="background-color: #a0a0a0;">
-                                        <td colspan="7" style="border: 1px solid black">
-                                            <span style="font-weight: bold; font-size: 12px">Accessories Furniture | 4420.19.00</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black " class="text-center">1</td>
-                                        <td style="border: 1px solid black">20999 Part of Goods</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.5</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.25</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.5</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.25</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black;" class="text-center">2</td>
-                                        <td style="border: 1px solid black">20999 Part of Goods</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.5</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.25</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.5</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.25</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black;" class="text-center">3</td>
-                                        <td style="border: 1px solid black">20999-Part of Goods</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.5</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.25</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.5</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.25</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black;" class="text-center">4</td>
-                                        <td style="border: 1px solid black">20999-Part of Goods</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.5</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.25</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.5</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.25</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black;" class="text-center">5</td>
-                                        <td style="border: 1px solid black">20999-Part of Goods</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.5</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.25</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.5</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.25</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black;" class="text-center">6</td>
-                                        <td style="border: 1px solid black">20999-Part of Goods</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.5</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.25</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.5</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.25</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black;" class="text-center">7</td>
-                                        <td style="border: 1px solid black">20999-Part of Goods</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.5</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.25</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.5</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.25</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black;" class="text-center">8</td>
-                                        <td style="border: 1px solid black">20999-Part of Goods</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.5</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.25</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.5</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.25</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black;" class="text-center">9</td>
-                                        <td style="border: 1px solid black">20999-Part of Goods</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.5</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.25</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.5</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.25</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black;" class="text-center">10</td>
-                                        <td style="border: 1px solid black">88888-Touch Up Set</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">5</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">4</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">5</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">4</td>
-                                    </tr>
-                                    <tr style="font-size: 13px">
-                                        <td style="border: 1px solid black; text-align: right; font-weight: bold" colspan="2">Total Kode 4420.19.00:</td>
-                                        <td style="border: 1px solid black; text-align: right; font-weight: bold" >20</td>
-                                        <td style="border: 1px solid black; text-align: right; font-weight: bold"></td>
-                                        <td style="border: 1px solid black; text-align: right; font-weight: bold"></td>
-                                        <td style="border: 1px solid black; text-align: right; font-weight: bold">59.50</td>
-                                        <td style="border: 1px solid black; text-align: right; font-weight: bold">46.25</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="7" style="height: 1px">
-                                        </td>
-                                    </tr>
-                                    <tr style="background-color: #a0a0a0;">
-                                        <td colspan="7" style="border: 1px solid black">
-                                            <span style="font-weight: bold; font-size: 12px">Accessories Furniture | 4420.19.00</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black " class="text-center">1</td>
-                                        <td style="border: 1px solid black">20999 Part of Goods</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.5</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.25</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.5</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.25</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black;" class="text-center">2</td>
-                                        <td style="border: 1px solid black">20999 Part of Goods</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.5</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.25</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.5</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.25</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black;" class="text-center">3</td>
-                                        <td style="border: 1px solid black">20999-Part of Goods</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.5</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.25</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.5</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.25</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black;" class="text-center">4</td>
-                                        <td style="border: 1px solid black">20999-Part of Goods</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.5</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.25</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.5</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.25</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black;" class="text-center">5</td>
-                                        <td style="border: 1px solid black">20999-Part of Goods</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.5</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.25</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.5</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.25</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black;" class="text-center">6</td>
-                                        <td style="border: 1px solid black">20999-Part of Goods</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.5</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.25</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.5</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.25</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black;" class="text-center">7</td>
-                                        <td style="border: 1px solid black">20999-Part of Goods</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.5</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.25</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.5</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.25</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black;" class="text-center">8</td>
-                                        <td style="border: 1px solid black">20999-Part of Goods</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.5</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.25</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.5</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.25</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black;" class="text-center">9</td>
-                                        <td style="border: 1px solid black">20999-Part of Goods</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.5</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.25</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.5</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">0.25</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black;" class="text-center">10</td>
-                                        <td style="border: 1px solid black">88888-Touch Up Set</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">5</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">4</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">5</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">4</td>
-                                    </tr>
-                                    <tr style="font-size: 13px">
-                                        <td style="border: 1px solid black; text-align: right; font-weight: bold" colspan="2">Total Kode 4420.19.00:</td>
-                                        <td style="border: 1px solid black; text-align: right; font-weight: bold" >20</td>
-                                        <td style="border: 1px solid black; text-align: right; font-weight: bold"></td>
-                                        <td style="border: 1px solid black; text-align: right; font-weight: bold"></td>
-                                        <td style="border: 1px solid black; text-align: right; font-weight: bold">59.50</td>
-                                        <td style="border: 1px solid black; text-align: right; font-weight: bold">46.25</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="7" style="height: 1px">
-                                        </td>
-                                    </tr>
+                                    <t t-set="hs_descriptions" t-value="{'4420.19.00': 'Accessories Furniture', '9403.60.90': 'Wooden Furniture'}"/>
+                                    <t t-set="hs_groups" t-value="{}"/>
+                                    <t t-foreach="doc.picking_ids" t-as="picking">
+                                        <t t-foreach="picking.move_ids" t-as="move">
+                                            <t t-set="hs_code" t-value="move.product_id.hs_code or 'N/A'"/>
+                                            <t t-if="hs_code not in hs_groups">
+                                                <t t-set="hs_groups" t-value="dict(hs_groups, **{hs_code: {'qty': 0, 'gw': 0, 'nw': 0, 'moves': []}})"/>
+                                            </t>
+                                            <t t-set="hs_groups" t-value="dict(hs_groups, **{hs_code: {'qty': hs_groups[hs_code]['qty'] + move.quantity, 'gw': hs_groups[hs_code]['gw'] + (move.product_id.gross_weight * move.quantity), 'nw': hs_groups[hs_code]['nw'] + (move.product_id.weight * move.quantity), 'moves': hs_groups[hs_code]['moves'] + [{'name': move.product_id.name, 'qty': move.quantity, 'gw': move.product_id.gross_weight, 'nw': move.product_id.weight}]}} )"/>
+                                        </t>
+                                    </t>
+                                    <t t-set="sorted_hs_groups" t-value="sorted(hs_groups.items(), key=lambda item: hs_descriptions.get(item[0], 'Furniture'))"/>
+                                    <t t-set="counter" t-value="1"/>
+                                    <t t-foreach="sorted_hs_groups" t-as="hs_item">
+                                        <t t-set="hs_code" t-value="hs_item[0]"/>
+                                        <t t-set="dynamic_description" t-value="hs_descriptions.get(hs_code, 'Furniture')"/>
+                                        <tr style="background-color: #a0a0a0;">
+                                            <td colspan="7" style="border: 1px solid black">
+                                                <span style="font-weight: bold; font-size: 12px"><t t-esc="dynamic_description"/> | <t t-esc="hs_code"/></span>
+                                            </td>
+                                        </tr>
+                                        <t t-foreach="hs_groups[hs_code]['moves']" t-as="move_detail">
+                                            <tr>
+                                                <td style="border: 1px solid black" class="text-center"><t t-esc="counter"/></td>
+                                                <td style="border: 1px solid black"><t t-esc="move_detail['name']"/></td>
+                                                <td style="border: 1px solid black; text-align: right"><t t-esc="int(move_detail['qty'])"/></td>
+                                                <td style="border: 1px solid black; text-align: right"><t t-esc="'%.2f' % move_detail['gw']"/></td>
+                                                <td style="border: 1px solid black; text-align: right"><t t-esc="'%.2f' % move_detail['nw']"/></td>
+                                                <td style="border: 1px solid black; text-align: right"><t t-esc="'%.2f' % (move_detail['gw'] * move_detail['qty'])"/></td>
+                                                <td style="border: 1px solid black; text-align: right"><t t-esc="'%.2f' % (move_detail['nw'] * move_detail['qty'])"/></td>
+                                            </tr>
+                                            <t t-set="counter" t-value="counter + 1"/>
+                                        </t>
+                                        <tr style="font-size: 13px">
+                                            <td style="border: 1px solid black; text-align: right; font-weight: bold" colspan="2">Total Kode <t t-esc="hs_code"/>:</td>
+                                            <td style="border: 1px solid black; text-align: right; font-weight: bold"><t t-esc="int(hs_groups[hs_code]['qty'])"/></td>
+                                            <td style="border: 1px solid black; text-align: right; font-weight: bold"></td>
+                                            <td style="border: 1px solid black; text-align: right; font-weight: bold"></td>
+                                            <td style="border: 1px solid black; text-align: right; font-weight: bold"><t t-esc="'%.2f' % hs_groups[hs_code]['gw']"/></td>
+                                            <td style="border: 1px solid black; text-align: right; font-weight: bold"><t t-esc="'%.2f' % hs_groups[hs_code]['nw']"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="7" style="height: 1px">
+                                            </td>
+                                        </tr>
+                                    </t>
+                                    <t t-set="total_qty" t-value="sum(hs_groups[hs]['qty'] for hs in hs_groups)"/>
+                                    <t t-set="total_gw" t-value="sum(hs_groups[hs]['gw'] for hs in hs_groups)"/>
+                                    <t t-set="total_nw" t-value="sum(hs_groups[hs]['nw'] for hs in hs_groups)"/>
                                     <tr style="background-color: #a0a0a0; font-size: 14px">
                                         <td style="border: 1px solid black; text-align: right; font-weight: bold" colspan="2">Grand Total</td>
-                                        <td style="border: 1px solid black; text-align: right" >40</td>
+                                        <td style="border: 1px solid black; text-align: right"><t t-esc="int(total_qty)"/></td>
                                         <td style="border: 1px solid black; text-align: right"></td>
                                         <td style="border: 1px solid black; text-align: right"></td>
-                                        <td style="border: 1px solid black; text-align: right">119</td>
-                                        <td style="border: 1px solid black; text-align: right">92.5</td>
+                                        <td style="border: 1px solid black; text-align: right"><t t-esc="'%.2f' % total_gw"/></td>
+                                        <td style="border: 1px solid black; text-align: right"><t t-esc="'%.2f' % total_nw"/></td>
                                     </tr>
                                 </tbody>
                             </table>

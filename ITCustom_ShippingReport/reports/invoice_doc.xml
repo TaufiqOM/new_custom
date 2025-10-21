@@ -73,254 +73,61 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td colspan="7" style="height: 1px">
+                                        <td colspan="5" style="height: 1px">
                                         </td>
                                     </tr>
-                                    <tr style="background-color: #a0a0a0;">
-                                        <td colspan="7" style="border: 1px solid black">
-                                            <span style="font-weight: bold; font-size: 12px">Accessories Furniture | 4420.19.00</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black " class="text-center">1</td>
-                                        <td style="border: 1px solid black">88888-Touch Up Set</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">5.00</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">5.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black;" class="text-center">2</td>
-                                        <td style="border: 1px solid black">88888-Touch Up Set</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">5.00</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">5.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black;" class="text-center">3</td>
-                                        <td style="border: 1px solid black">88888-Touch Up Set</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">5.00</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">5.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black;" class="text-center">4</td>
-                                        <td style="border: 1px solid black">88888-Touch Up Set</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">5.00</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">5.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black;" class="text-center">5</td>
-                                        <td style="border: 1px solid black">88888-Touch Up Set</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">5.00</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">5.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black;" class="text-center">6</td>
-                                        <td style="border: 1px solid black">88888-Touch Up Set</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">5.00</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">5.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black;" class="text-center">7</td>
-                                        <td style="border: 1px solid black">88888-Touch Up Set</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">5.00</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">5.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black;" class="text-center">8</td>
-                                        <td style="border: 1px solid black">88888-Touch Up Set</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">5.00</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">5.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black;" class="text-center">9</td>
-                                        <td style="border: 1px solid black">88888-Touch Up Set</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">5.00</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">5.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black;" class="text-center">10</td>
-                                        <td style="border: 1px solid black">20999-Part of Goods</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">5.00</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">5.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black;" class="text-center">11</td>
-                                        <td style="border: 1px solid black">20999-Part of Goods</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">5.00</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">5.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black;" class="text-center">12</td>
-                                        <td style="border: 1px solid black">88888-Touch Up Set</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">5.00</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">5.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black;" class="text-center">13</td>
-                                        <td style="border: 1px solid black">20999 Part of Goods</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">5.00</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">5.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black;" class="text-center">14</td>
-                                        <td style="border: 1px solid black">20999-Part of Goods</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">590.00</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">590.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black;" class="text-center">15</td>
-                                        <td style="border: 1px solid black">20999-Part of Goods</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">287.00</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">287.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black;" class="text-center">16</td>
-                                        <td style="border: 1px solid black">20999-Part of Goods</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">25.00</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">25.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black;" class="text-center">17</td>
-                                        <td style="border: 1px solid black">20999 Part of Goods</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">5.00</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">5.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black;" class="text-center">18</td>
-                                        <td style="border: 1px solid black">20999 Part of Goods</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">26.00</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">26.00</td>
-                                    </tr>
-                                    <tr style="font-size: 13px">
-                                        <td style="border: 1px solid black; text-align: right; font-weight: bold" colspan="2">Total Kode 4420.19.00:</td>
-                                        <td style="border: 1px solid black; text-align: right; font-weight: bold" >18</td>
-                                        <td style="border: 1px solid black; text-align: right; font-weight: bold"></td>
-                                        <td style="border: 1px solid black; text-align: right; font-weight: bold">1,133.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="7" style="height: 1px">
-                                        </td>
-                                    </tr>
-                                    <tr style="background-color: #a0a0a0;">
-                                        <td colspan="7" style="border: 1px solid black">
-                                            <span style="font-weight: bold; font-size: 12px">Wooden Furniture | 9403.60.90</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black " class="text-center">1</td>
-                                        <td style="border: 1px solid black">250307B-Turnball Entry Unit</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">2,250.00</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">2,250.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black;" class="text-center">2</td>
-                                        <td style="border: 1px solid black">250307C-Turnball Scullery</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">5,867.00</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">5,867.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black;" class="text-center">3</td>
-                                        <td style="border: 1px solid black">250307A-Turnball Kitchen</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">7,011.00</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">7,011.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black;" class="text-center">4</td>
-                                        <td style="border: 1px solid black">250626Manly Apartment Batten</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">250.00</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">250.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black;" class="text-center">5</td>
-                                        <td style="border: 1px solid black">250409B-Clark Appliance Area</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">2,250.00</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">2,250.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black;" class="text-center">6</td>
-                                        <td style="border: 1px solid black">250409A-Clark Scullery</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">3,580.00</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">3,580.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black;" class="text-center">7</td>
-                                        <td style="border: 1px solid black">250408A-JBE Cabinet</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">450.00</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">450.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black;" class="text-center">8</td>
-                                        <td style="border: 1px solid black">22256B-David and Vicky The Other Half Dining Table with reeded</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">742.50</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">742.50</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black;" class="text-center">9</td>
-                                        <td style="border: 1px solid black">241205B-Sunbrae House 2 Bedroom Parts</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">5.00</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">5.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black;" class="text-center">10</td>
-                                        <td style="border: 1px solid black">250416A-Sunbrae 1 Bedsides (2x)</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">5.00</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">5.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black;" class="text-center">11</td>
-                                        <td style="border: 1px solid black">250409C-Clark Vanity 1900</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">1,350.00</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">1,350.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid black;" class="text-center">12</td>
-                                        <td style="border: 1px solid black">250409D-Clark Vanity 1490</td>
-                                        <td style="border: 1px solid black; text-align: right">1</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">900.00</td>
-                                        <td style="border: 1px solid black; text-align: right" class="text-right">900.00</td>
-                                    </tr>
-                                    <tr style="font-size: 13px">
-                                        <td style="border: 1px solid black; text-align: right; font-weight: bold" colspan="2">Total Kode 9403.60.90:</td>
-                                        <td style="border: 1px solid black; text-align: right; font-weight: bold" >12</td>
-                                        <td style="border: 1px solid black; text-align: right; font-weight: bold"></td>
-                                        <td style="border: 1px solid black; text-align: right; font-weight: bold">24,660.50</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="7" style="height: 1px">
-                                        </td>
-                                    </tr>
+                                    <t t-set="hs_descriptions" t-value="{'4420.19.00': 'Accessories Furniture', '9403.60.90': 'Wooden Furniture'}"/>
+                                    <t t-set="hs_groups" t-value="{}"/>
+                                    <t t-foreach="doc.picking_ids" t-as="picking">
+                                        <t t-foreach="picking.move_ids" t-as="move">
+                                            <t t-set="hs_code" t-value="move.product_id.hs_code or 'N/A'"/>
+                                            <t t-if="hs_code not in hs_groups">
+                                                <t t-set="hs_groups" t-value="dict(hs_groups, **{hs_code: {'qty': 0, 'amount': 0, 'moves': []}})"/>
+                                            </t>
+                                            <t t-set="sale_lines" t-value="move.picking_id.sale_id and move.picking_id.sale_id.order_line.filtered(lambda l: l.product_id == move.product_id) or []"/>
+                                            <t t-set="unit_price" t-value="sale_lines and sale_lines[0].price_unit or move.product_id.list_price"/>
+                                            <t t-set="amount" t-value="unit_price * move.quantity"/>
+                                            <t t-set="hs_groups" t-value="dict(hs_groups, **{hs_code: {'qty': hs_groups[hs_code]['qty'] + move.quantity, 'amount': hs_groups[hs_code]['amount'] + amount, 'moves': hs_groups[hs_code]['moves'] + [{'name': move.product_id.name, 'qty': move.quantity, 'unit_price': unit_price, 'amount': amount}]}} )"/>
+                                        </t>
+                                    </t>
+                                    <t t-set="sorted_hs_groups" t-value="sorted(hs_groups.items(), key=lambda item: hs_descriptions.get(item[0], 'Furniture'))"/>
+                                    <t t-set="counter" t-value="1"/>
+                                    <t t-foreach="sorted_hs_groups" t-as="hs_item">
+                                        <t t-set="hs_code" t-value="hs_item[0]"/>
+                                        <t t-set="dynamic_description" t-value="hs_descriptions.get(hs_code, 'Furniture')"/>
+                                        <tr style="background-color: #a0a0a0;">
+                                            <td colspan="5" style="border: 1px solid black">
+                                                <span style="font-weight: bold; font-size: 12px"><t t-esc="dynamic_description"/> | <t t-esc="hs_code"/></span>
+                                            </td>
+                                        </tr>
+                                        <t t-foreach="hs_groups[hs_code]['moves']" t-as="move_detail">
+                                            <tr>
+                                                <td style="border: 1px solid black" class="text-center"><t t-esc="counter"/></td>
+                                                <td style="border: 1px solid black"><t t-esc="move_detail['name']"/></td>
+                                                <td style="border: 1px solid black; text-align: right"><t t-esc="int(move_detail['qty'])"/></td>
+                                                <td style="border: 1px solid black; text-align: right"><t t-esc="'%.2f' % move_detail['unit_price']"/></td>
+                                                <td style="border: 1px solid black; text-align: right"><t t-esc="'%.2f' % move_detail['amount']"/></td>
+                                            </tr>
+                                            <t t-set="counter" t-value="counter + 1"/>
+                                        </t>
+                                        <tr style="font-size: 13px">
+                                            <td style="border: 1px solid black; text-align: right; font-weight: bold" colspan="2">Total Kode <t t-esc="hs_code"/>:</td>
+                                            <td style="border: 1px solid black; text-align: right; font-weight: bold"><t t-esc="int(hs_groups[hs_code]['qty'])"/></td>
+                                            <td style="border: 1px solid black; text-align: right; font-weight: bold"></td>
+                                            <td style="border: 1px solid black; text-align: right; font-weight: bold"><t t-esc="'%.2f' % hs_groups[hs_code]['amount']"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="5" style="height: 1px">
+                                            </td>
+                                        </tr>
+                                    </t>
+                                    <t t-set="total_qty" t-value="sum(hs_groups[hs]['qty'] for hs in hs_groups)"/>
+                                    <t t-set="total_amount" t-value="sum(hs_groups[hs]['amount'] for hs in hs_groups)"/>
                                     <tr style="background-color: #a0a0a0; font-size: 14px">
                                         <td style="border: 1px solid black; text-align: right; font-weight: bold" colspan="2">Grand Total:</td>
-                                        <td style="border: 1px solid black; text-align: right" >30</td>
+                                        <td style="border: 1px solid black; text-align: right"><t t-esc="int(total_qty)"/></td>
                                         <td style="border: 1px solid black; text-align: right"></td>
-                                        <td style="border: 1px solid black; text-align: right; font-weight: bold">25,793.50</td>
+                                        <td style="border: 1px solid black; text-align: right; font-weight: bold"><t t-esc="'%.2f' % total_amount"/></td>
                                     </tr>
                                 </tbody>
                             </table>

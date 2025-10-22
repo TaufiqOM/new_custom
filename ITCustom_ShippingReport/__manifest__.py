@@ -14,19 +14,13 @@
     'data': [
         'reports/pre_shipping_report.xml',
         'reports/pre_shipping_no_image_m3.xml',
-        'reports/commercial_invoice.xml',
-        'reports/packing_list.xml',
-        'reports/invoice_doc.xml',
-        'reports/report_actions.xml',
         'reports/invoice_m3.xml',
         'reports/invoice_doc_buyer_bern.xml',
         'reports/packing_list_buyer_bern.xml',
+        'reports/shipping_plan_bernhardt.xml',
+        'reports/report_actions.xml',
     ],
-    'assets': {
-        'web.report_assets_pdf': [
-            'ITCustom_ShippingReport/static/src/img/SICS.png',
-        ],
-    },
+    'assets': {},
     'installable': True,
     'application': False,
 }

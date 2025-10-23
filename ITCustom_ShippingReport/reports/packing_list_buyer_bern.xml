@@ -8,7 +8,9 @@
                         <div class="page" style="font-size: 13px; font-family: 'Arial', sans-serif;">
                             <div class="row">
                                 <div class="col-10" style="text-align: right">
-                                    <strong>Packing List BUYER - BERN</strong>
+                                    <strong>Invoice Doc BUYER |
+                                        <t t-esc="doc.description"/>
+                                    </strong>
                                 </div>
                                 <div class="col-2" style="text-align: center; top: 0">
                                     <t t-if="doc.company_id.logo">
@@ -28,7 +30,8 @@
                             <div class="row" style="margin-top: -10px; margin-bottom:10px">
                                 <table>
                                     <tr style="vertical-align: middle; text-align: center">
-                                        <td style="background-color: yellow; font-weight: bold; font-size: 15px"> BERN263AF-B
+                                        <td style="background-color: yellow; font-weight: bold; font-size: 15px">
+                                            <t t-esc="doc.description"/>
                                         </td>
                                     </tr>
                                 </table>
@@ -41,10 +44,14 @@
                                             </td>
                                             <td style="width:1%">:
                                             </td>
-                                            <td style="width:79%">BERNHARDT FURNITURE COMPANY PLANT 2
-                                                1828 Morganton Blvd Lenoir, NC 28645 USA
-                                                Tel. +1-828-212-3436, +1-828-759-6773
-                                                Attn: Paul Cobb
+                                            <td style="width:79%">
+                                                <span t-esc="doc.ship_to_id.name or ''"/>
+                                                <br/>
+                                                <span t-esc="doc.ship_to_id.street or ''"/>
+                                                <br/>
+                                                <span t-esc="(doc.ship_to_id.city or '') + (' ' if doc.ship_to_id.city and doc.ship_to_id.zip else '') + (doc.ship_to_id.zip or '') + (', Phone ' if doc.ship_to_id.phone else '') + (doc.ship_to_id.phone or '') + (' - ' if doc.ship_to_id.country_id else '') + (doc.ship_to_id.country_id.name or '')"/>
+                                                <br/>
+                                                <span t-esc="(doc.ship_to_id.child_ids and doc.ship_to_id.child_ids[0].name or '')"/>
                                             </td>
                                         </tr>
                                         <tr style="vertical-align: middle; font-weight: bold;">
@@ -52,10 +59,14 @@
                                             </td>
                                             <td>:
                                             </td>
-                                            <td>BERNHARDT FURNITURE COMPANY PLANT 2
-                                                1828 Morganton Blvd Lenoir, NC 28645 USA
-                                                Tel. +1-828-212-3436, +1-828-759-6773
-                                                Attn: Paul Cobb
+                                            <td>
+                                                <span t-esc="doc.consignee_id.name or ''"/>
+                                                <br/>
+                                                <span t-esc="doc.consignee_id.street or ''"/>
+                                                <br/>
+                                                <span t-esc="(doc.consignee_id.city or '') + (' ' if doc.consignee_id.city and doc.consignee_id.zip else '') + (doc.consignee_id.zip or '') + (', Phone ' if doc.consignee_id.phone else '') + (doc.consignee_id.phone or '') + (' - ' if doc.consignee_id.country_id else '') + (doc.consignee_id.country_id.name or '')"/>
+                                                <br/>
+                                                <span t-esc="(doc.consignee_id.child_ids and doc.consignee_id.child_ids[0].name or '')"/>
                                             </td>
                                         </tr>
                                         <tr style="vertical-align: middle; font-weight: bold;">
@@ -63,7 +74,14 @@
                                             </td>
                                             <td>:
                                             </td>
-                                            <td>None
+                                            <td>
+                                                <span t-esc="doc.notify_party_id.name or ''"/>
+                                                <br/>
+                                                <span t-esc="doc.notify_party_id.street or ''"/>
+                                                <br/>
+                                                <span t-esc="(doc.notify_party_id.city or '') + (' ' if doc.notify_party_id.city and doc.notify_party_id.zip else '') + (doc.notify_party_id.zip or '') + (', Phone ' if doc.notify_party_id.phone else '') + (doc.notify_party_id.phone or '') + (' - ' if doc.notify_party_id.country_id else '') + (doc.notify_party_id.country_id.name or '')"/>
+                                                <br/>
+                                                <span t-esc="(doc.notify_party_id.child_ids and doc.notify_party_id.child_ids[0].name or '')"/>
                                             </td>
                                         </tr>
                                     </table>
@@ -79,7 +97,9 @@
                                                 </td>
                                                 <td style="width: 1%">:
                                                 </td>
-                                                <td style="width: 64%">07 October 2025</td>
+                                                <td style="width: 64%">
+                                                    <t t-esc="doc.scheduled_date.strftime('%d %B %Y')"/>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>
@@ -87,7 +107,9 @@
                                                 </td>
                                                 <td>:
                                                 </td>
-                                                <td>S3284R1</td>
+                                                <td>
+                                                    <t t-esc="doc.description"/>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>
@@ -95,15 +117,11 @@
                                                 </td>
                                                 <td>:
                                                 </td>
-                                                <td>407/BERN263AF-B/EXP/X/25</td>
-                                            </tr>
-                                            <tr>
                                                 <td>
-                                                    Vessel
+                                                    <t t-set="roman_months" t-value="['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII']"/>
+                                                    <t t-set="number" t-value="(doc.name.split('/')[-1].lstrip('0') if doc.name else '')"/>
+                                                    <t t-esc="f'{number}/TDP/NZ445/EXP/{roman_months[doc.scheduled_date.month]}/{doc.scheduled_date.year % 100}'"/>
                                                 </td>
-                                                <td>:
-                                                </td>
-                                                <td>FEDEX AF</td>
                                             </tr>
                                             <tr>
                                                 <td>
@@ -111,7 +129,29 @@
                                                 </td>
                                                 <td>:
                                                 </td>
-                                                <td></td>
+                                                <td>
+                                                    <t t-esc="doc.kode_kontainer"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    Vessel
+                                                </td>
+                                                <td>:
+                                                </td>
+                                                <td>
+                                                    <t t-esc="doc.mother_vessel"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    Seal Number
+                                                </td>
+                                                <td>:
+                                                </td>
+                                                <td>
+                                                    <t t-esc="doc.seal"/>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>
@@ -119,7 +159,9 @@
                                                 </td>
                                                 <td>:
                                                 </td>
-                                                <td>07 October 2025</td>
+                                                <td>
+                                                    <t t-esc="doc.etd_vessel.strftime('%d %B %Y')"/>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>
@@ -127,7 +169,9 @@
                                                 </td>
                                                 <td>:
                                                 </td>
-                                                <td>14 October 2025</td>
+                                                <td>
+                                                    <t t-esc="doc.eta_vessel.strftime('%d %B %Y')"/>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>
@@ -135,7 +179,9 @@
                                                 </td>
                                                 <td>:
                                                 </td>
-                                                <td>AWB# 8849 5448 4805</td>
+                                                <td>
+                                                    <t t-esc="doc.no_bl"/>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>
@@ -143,7 +189,9 @@
                                                 </td>
                                                 <td>:
                                                 </td>
-                                                <td>CHARLOTTE, NORTH CAROLINA, USA</td>
+                                                <td>
+                                                    <t t-esc="doc.to_vessel"/>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>
@@ -167,7 +215,7 @@
                             </div>
                             <div class="row">
                                 <table class="table table-borderless table-sm mt-3" 
-       style="font-size:11.4px; border-collapse:collapse; line-height:1.1; table-layout:auto; width:100%;">
+                                    style="font-size:11.4px; border-collapse:collapse; line-height:1.1; table-layout:auto; width:100%;">
                                     <thead class="text-center" style="font-weight:bold; background-color:#181a1c;">
                                         <tr>
                                             <td style="background-color:#181a1c; color:white; border:1px solid white; vertical-align:middle; text-align:center; padding:4px;">No</td>
@@ -190,37 +238,91 @@
                                         </tr>
                                         <tr style="background-color: #a0a0a0;">
                                             <td colspan="11" style="border: 1px solid black">
-                                                <span style="font-weight: bold; font-size: 12px">BERN-S3284R1</span>
+                                                <span style="font-weight: bold; font-size: 12px"><t t-esc="doc.description"/></span>
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td style="border: 1px solid black; vertical-align: middle; text-align: center">1</td>
-                                            <td style="border: 1px solid black; vertical-align: middle; text-align: center">1</td>
-                                            <td style="border: 1px solid black; vertical-align: middle; text-align: center">1</td>
-                                            <td style="border: 1px solid black; vertical-align: middle;">390-121B</td>
-                                            <td style="border: 1px solid black; vertical-align: middle;"></td>
-                                            <td style="border: 1px solid black; vertical-align: middle;"></td>
-                                            <td style="border: 1px solid black; vertical-align: middle;">250611A</td>
-                                            <td style="border: 1px solid black; vertical-align: middle; 
-                                                    white-space: normal; word-wrap: break-word; max-width: 180px;">
-                                                390-121B SIDE TABLE 390-121B SIDE TABLE
-                                            </td>
-                                            <td style="border: 1px solid black; vertical-align: middle; text-align: center">24.5</td>
-                                            <td style="border: 1px solid black; vertical-align: middle; text-align: center">19</td>
-                                            <td style="border: 1px solid black; vertical-align: middle; text-align: center">0.14</td>
-                                        </tr>
+                                        <t t-set="product_groups" t-value="{}"/>
+                                        <t t-foreach="doc.picking_ids" t-as="picking">
+                                            <t t-foreach="picking.move_ids" t-as="move">
+                                                <t t-set="product_name" t-value="move.product_id.name or 'N/A'"/>
+                                                <t t-if="product_name not in product_groups">
+                                                    <t t-set="sale_lines" t-value="move.picking_id.sale_id and move.picking_id.sale_id.order_line.filtered(lambda l: l.product_id == move.product_id) or []"/>
+                                                    <t t-set="unit_price" t-value="sale_lines and sale_lines[0].price_unit or move.product_id.list_price"/>
+                                                    <t t-set="buyer_code" t-value="move.picking_id.sale_id and env['sale.id.external'].search([('product', '=', move.product_id.product_tmpl_id.id)], limit=1).primary_id or ''"/>
+                                                    <t t-set="om_code" t-value="move.product_id.default_code or ''"/>
+                                                    <t t-set="sku" t-value="move.product_id.product_tmpl_id.sku or ''"/>
+                                                    <t t-set="qty_box" t-value="len(move.product_id.packaging_ids)"/>
+                                                    <t t-set="gross_weight" t-value="move.product_id.product_tmpl_id.gross_weight or 0"/>
+                                                    <t t-set="weight" t-value="move.product_id.weight or 0"/>
+                                                    <t t-set="volume_packing" t-value="move.product_id.product_tmpl_id.volume_packing or 0"/>
+                                                    <t t-set="product_groups" t-value="dict(product_groups, **{product_name: {'qty': 0, 'qty_box': qty_box, 'buyer_code': buyer_code, 'om_code': om_code, 'sku': sku, 'gross_weight': gross_weight, 'weight': weight, 'volume_packing': volume_packing, 'amount': 0, 'unit_price': unit_price}})"/>
+                                                </t>
+                                                <t t-set="amount" t-value="product_groups[product_name]['unit_price'] * move.quantity"/>
+                                                <t t-set="current" t-value="product_groups[product_name]"/>
+                                                <t t-set="product_groups" t-value="dict(product_groups, **{product_name: {'qty': current['qty'] + move.quantity, 'qty_box': current['qty_box'], 'buyer_code': current['buyer_code'], 'om_code': current['om_code'], 'sku': current['sku'], 'gross_weight': current['gross_weight'], 'weight': current['weight'], 'volume_packing': current['volume_packing'], 'amount': current['amount'] + amount, 'unit_price': current['unit_price']}})"/>
+                                            </t>
+                                        </t>
+                                        <t t-set="counter" t-value="1"/>
+                                        <t t-foreach="product_groups" t-as="product_name">
+                                            <tr>
+                                                <td style="border: 1px solid black; vertical-align: middle; text-align: center">
+                                                    <t t-esc="counter"/>
+                                                </td>
+                                                <td style="border: 1px solid black; vertical-align: middle; text-align: center">
+                                                    <t t-esc="int(product_groups[product_name]['qty'])"/>
+                                                </td>
+                                                <td style="border: 1px solid black; vertical-align: middle; text-align: center">
+                                                    <t t-esc="int(product_groups[product_name]['qty_box'])"/>
+                                                </td>
+                                                <td style="border: 1px solid black; vertical-align: middle;">
+                                                    <t t-esc="product_groups[product_name]['buyer_code']"/>
+                                                </td>
+                                                <td style="border: 1px solid black; vertical-align: middle;">
+                                                    <t t-esc="product_groups[product_name]['sku']"/>
+                                                </td>
+                                                <td style="border: 1px solid black; vertical-align: middle;">##</td>
+                                                <td style="border: 1px solid black; vertical-align: middle;">
+                                                    <t t-esc="product_groups[product_name]['om_code']"/>
+                                                </td>
+                                                <td style="border: 1px solid black; vertical-align: middle; 
+                                                        white-space: normal; word-wrap: break-word; max-width: 180px;">
+                                                    <t t-esc="product_name"/>
+                                                </td>
+                                                <td style="border: 1px solid black; vertical-align: middle; text-align: center">
+                                                    <t t-esc="'%.2f' % product_groups[product_name]['gross_weight']"/>
+                                                </td>
+                                                <td style="border: 1px solid black; vertical-align: middle; text-align: center">
+                                                    <t t-esc="'%.2f' % product_groups[product_name]['weight']"/>
+                                                </td>
+                                                <td style="border: 1px solid black; vertical-align: middle; text-align: center">
+                                                    <t t-esc="'%.2f' % product_groups[product_name]['volume_packing']"/>
+                                                </td>
+                                            </tr>
+                                            <t t-set="counter" t-value="counter + 1"/>
+                                        </t>
+                                        <t t-set="total_qty" t-value="sum(product_groups[p]['qty'] for p in product_groups)"/>
+                                        <t t-set="total_qty_box" t-value="sum(product_groups[p]['qty_box'] for p in product_groups)"/>
+                                        <t t-set="total_gross_weight" t-value="sum(product_groups[p]['gross_weight'] for p in product_groups)"/>
+                                        <t t-set="total_weight" t-value="sum(product_groups[p]['weight'] for p in product_groups)"/>
+                                        <t t-set="total_volume_packing" t-value="sum(product_groups[p]['volume_packing'] for p in product_groups)"/>
                                         <tr style="height: 40px">
                                             <td style="border-bottom: 1px solid black; font-weight: bold; vertical-align: middle;"></td>
                                             <td style="border-bottom: 1px solid black; font-weight: bold; vertical-align: middle; text-align: right">Total Pcs:</td>
-                                            <td style="border-bottom: 1px solid black; font-weight: bold; vertical-align: middle; text-align: center">1</td>
+                                            <td style="border-bottom: 1px solid black; font-weight: bold; vertical-align: middle; text-align: center">
+                                                <t t-esc="int(total_qty)"/>
+                                            </td>
                                             <td style="border-bottom: 1px solid black; font-weight: bold; vertical-align: middle; text-align: right">Total Box:</td>
-                                            <td style="border-bottom: 1px solid black; font-weight: bold; vertical-align: middle;">1</td>
+                                            <td style="border-bottom: 1px solid black; font-weight: bold; vertical-align: middle;">
+                                                <t t-esc="int(total_qty_box)"/>
+                                            </td>
                                             <td style="border-bottom: 1px solid black; font-weight: bold; vertical-align: middle;"></td>
                                             <td style="border-bottom: 1px solid black; font-weight: bold; vertical-align: middle;"></td>
                                             <td style="border-bottom: 1px solid black; font-weight: bold; vertical-align: middle;"></td>
                                             <td style="border-bottom: 1px solid black; font-weight: bold; vertical-align: middle;"></td>
                                             <td style="border-bottom: 1px solid black; font-weight: bold; vertical-align: middle; text-align: right">Total CBM:</td>
-                                            <td style="border-bottom: 1px solid black; font-weight: bold; vertical-align: middle; text-align: right">0.14</td>
+                                            <td style="border-bottom: 1px solid black; font-weight: bold; vertical-align: middle; text-align: right">
+                                                <t t-esc="'%.2f' % total_volume_packing"/>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -260,22 +362,30 @@
                                         <tr>
                                             <td style="text-align:right; padding:2px 4px; vertical-align:middle;">Gross Weight of Shipment (kgs)</td>
                                             <td style="padding:2px 4px; vertical-align:middle; text-align: center">:</td>
-                                            <td style="padding:2px 4px; vertical-align:middle;">24.50</td>
+                                            <td style="padding:2px 4px; vertical-align:middle;">
+                                                <t t-esc="'%.2f' % total_gross_weight"/>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td style="text-align:right; padding:2px 4px; vertical-align:middle;">Net Weight of Shipment (kgs)</td>
                                             <td style="padding:2px 4px; vertical-align:middle; text-align: center">:</td>
-                                            <td style="padding:2px 4px; vertical-align:middle;">19.00</td>
+                                            <td style="padding:2px 4px; vertical-align:middle;">
+                                                <t t-esc="'%.2f' % total_weight"/>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td style="text-align:right; padding:2px 4px; vertical-align:middle;">Total CBM of Shipment</td>
                                             <td style="padding:2px 4px; vertical-align:middle; text-align: center">:</td>
-                                            <td style="padding:2px 4px; vertical-align:middle;">0.14</td>
+                                            <td style="padding:2px 4px; vertical-align:middle;">
+                                                <t t-esc="'%.2f' % total_volume_packing"/>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td style="text-align:right; padding:2px 4px; vertical-align:middle;">Total QTY (pcs/sets)</td>
                                             <td style="padding:2px 4px; vertical-align:middle;">:</td>
-                                            <td style="padding:2px 4px; vertical-align:middle;">1</td>
+                                            <td style="padding:2px 4px; vertical-align:middle;">
+                                                <t t-esc="int(total_qty)"/>
+                                            </td>
                                         </tr>
                                     </table>
                                 </div>

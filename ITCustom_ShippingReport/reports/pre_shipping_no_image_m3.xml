@@ -21,10 +21,19 @@
                                             <t t-set="color_attribute_sizes" t-value="color_attribute_sizes + [move.sale_line_id.color_attribute_size]"/>
                                         </t>
                                         <t t-set="volume_packing" t-value="sum(p.cbm for p in move.product_id.packaging_ids) or 0"/>
-                                        <t t-set="total_height" t-value="sum(p.package_type_id.height for p in move.product_id.packaging_ids if p.package_type_id) or 0"/>
+                                        <t t-set="total_height" t-value="sum(p.height for p in move.product_id.packaging_ids if p.height) or 0"/>
                                         <t t-set="total_width" t-value="sum((p.width or 0) for p in move.product_id.packaging_ids) or 0"/>
                                         <t t-set="total_length" t-value="sum((p.packaging_length or 0) for p in move.product_id.packaging_ids) or 0"/>
-                                        <t t-set="temp_products" t-value="dict(order_groups[client_ref]['products'], **{product_name: {'qty': 0, 'color_attribute_sizes': color_attribute_sizes, 'volume_packing': volume_packing, 'default_code': default_code, 'total_height': total_height, 'total_width': total_width, 'total_length': total_length}})"/>
+                                        <t t-set="bom" t-value="env['mrp.bom'].search([('product_tmpl_id', '=', move.product_id.product_tmpl_id.id), ('code', '=', move.product_id.default_code)], limit=1)"/>
+                                        <t t-set="m3_kayu" t-value="0"/>
+                                        <t t-if="bom">
+                                            <t t-foreach="bom.bom_line_ids" t-as="line">
+                                                <t t-if="line.product_uom_id.name == 'm3'">
+                                                    <t t-set="m3_kayu" t-value="m3_kayu + (line.product_qty * move.quantity)"/>
+                                                </t>
+                                            </t>
+                                        </t>
+                                        <t t-set="temp_products" t-value="dict(order_groups[client_ref]['products'], **{product_name: {'qty': 0, 'color_attribute_sizes': color_attribute_sizes, 'volume_packing': volume_packing, 'default_code': default_code, 'total_height': total_height, 'total_width': total_width, 'total_length': total_length, 'm3_kayu': m3_kayu}})"/>
                                         <t t-set="temp_order" t-value="dict(order_groups[client_ref], **{'products': temp_products})"/>
                                         <t t-set="order_groups" t-value="dict(order_groups, **{client_ref: temp_order})"/>
                                     </t>
@@ -32,7 +41,7 @@
                                     <t t-if="move.sale_line_id and move.sale_line_id.color_attribute_size and move.sale_line_id.color_attribute_size not in current_color_sizes">
                                         <t t-set="current_color_sizes" t-value="current_color_sizes + [move.sale_line_id.color_attribute_size]"/>
                                     </t>
-                                    <t t-set="temp_products" t-value="dict(order_groups[client_ref]['products'], **{product_name: {'qty': order_groups[client_ref]['products'][product_name]['qty'] + move.quantity, 'color_attribute_sizes': current_color_sizes, 'volume_packing': order_groups[client_ref]['products'][product_name]['volume_packing'], 'default_code': order_groups[client_ref]['products'][product_name]['default_code']}})"/>
+                                    <t t-set="temp_products" t-value="dict(order_groups[client_ref]['products'], **{product_name: {'qty': order_groups[client_ref]['products'][product_name]['qty'] + move.quantity, 'color_attribute_sizes': current_color_sizes, 'volume_packing': order_groups[client_ref]['products'][product_name]['volume_packing'], 'default_code': order_groups[client_ref]['products'][product_name]['default_code'], 'total_height': order_groups[client_ref]['products'][product_name]['total_height'], 'total_width': order_groups[client_ref]['products'][product_name]['total_width'], 'total_length': order_groups[client_ref]['products'][product_name]['total_length'], 'm3_kayu': order_groups[client_ref]['products'][product_name]['m3_kayu']}})"/>
                                     <t t-set="temp_order" t-value="dict(order_groups[client_ref], **{'products': temp_products})"/>
                                     <t t-set="order_groups" t-value="dict(order_groups, **{client_ref: temp_order})"/>
                                 </t>
@@ -40,60 +49,30 @@
                         </t>
                         <div class="page" style="font-size: 12px; font-family: 'Arial', sans-serif;">
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-10">
+                                    <h2 style="font-weight: bold; margin-bottom: -1px;">Pre Shipping</h2>
+                                    <h5 style="font-weight: bold;">
+                                        <t t-esc="doc.description"/>,
+                                        <t t-esc="doc.scheduled_date.strftime('%d %B %Y') if doc.scheduled_date else ''"/>
+                                    </h5>
                                 </div>
-                                <div class="col-6">
-                                    <table class="table table-sm table-borderless" style="border-collapse: collapse; line-height: 1.2;">
-                                        <tbody>
-                                            <tr>
-                                                <td style="width: 40%; padding: 0;">
-                                                    <strong>Packing List | <t t-esc="doc.description or 'TDP/NZ445'"/></strong>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style="width: 40%; padding: 0;">
-                                                    <strong style="font-size: 14px">PACKING/WEIGHT LIST.</strong>
-                                                </td>
-                                                <td style="padding: 0;">
-                                                    <strong style="font-size: 14px">: <t t-set="roman_months" t-value="['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII']"/>
-                                                    <t t-set="number" t-value="(doc.name.split('/')[-1].lstrip('0') if doc.name else '')"/>
-                                                    <t t-esc="f'{number}/{doc.description}/EXP/{roman_months[doc.scheduled_date.month]}/{doc.scheduled_date.year % 100}' if doc.scheduled_date else '282/TDP/NZ445/EXP/VII/25'"/></strong>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style="padding: 0;">
-                                                    <strong>Date</strong>
-                                                </td>
-                                                <td style="padding: 0;">: <t t-esc="doc.scheduled_date.strftime('%d %B %Y') if doc.scheduled_date else '16 July 2025'"/></td>
-                                            </tr>
-                                            <tr>
-                                                <td style="padding: 0;">
-                                                    <strong>Shipped per</strong>
-                                                </td>
-                                                <td style="padding: 0;">: <t t-esc="doc.mother_vessel or 'SINAR SANUR 116N'"/></td>
-                                            </tr>
-                                            <tr>
-                                                <td style="padding: 0;">
-                                                    <strong>Sailling On</strong>
-                                                </td>
-                                                <td style="padding: 0;">: <t t-esc="doc.etd_vessel.strftime('%d %B %Y') if doc.etd_vessel else '20 July 2025'"/></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                <div class="col-2" style="text-align: right">
+                                    <t t-if="docs and docs[0].company_id.logo">
+                                        <img t-att-src="'data:image/png;base64,%s' % (docs[0].company_id.logo.decode())"
+                                        style="max-height: 120px; object-fit: contain; margin-top: -23px"
+                                        alt="Company Logo"/>
+                                    </t>
+                                    <t t-set="now" t-value="datetime.datetime.utcnow() + datetime.timedelta(hours=7)"/>
                                 </div>
                             </div>
-                            <hr class="w-100"/>
-                            <div class="row">
-                                <div class="col-6" style="line-height: 1.2; font-size: 15px; font-weight: bold">
-                                    <strong>TO:</strong>
-                                    <br/>
-                                    <span><t t-esc="doc.consignee or 'The Design Project,'"/></span>
-                                    <br/>
-                                    <span><t t-esc="doc.ship_to or 'Home Ideas Centre, 165 The Strand,'"/></span>
-                                    <br/>
-                                    <span><t t-esc="(doc.company_id.city or '') + (' ' if doc.company_id.city and doc.company_id.zip else '') + (doc.company_id.zip or '') + (', ' if doc.company_id.city or doc.company_id.zip else '') + (doc.company_id.country_id.name or '') + (' Phone ' if doc.company_id.phone else '') + (doc.company_id.phone or '') or 'Parnell 1010, Phone 0275202727 - New Zealand'"/></span>
-                                    <br/>
-                                    <span>Attn. ##</span>
+                            <div class="row" style="margin-top: -20px">
+                                <div class="col-8">
+                                    <span style="font-weight: bold; font-size: 15px">
+                                    Status Shipping : Confirmed | Status Container : Regular
+                                    </span>
+                                </div>
+                                <div class="col-4" style="text-align: right">
+                                    <span>Printed on: <t t-esc="now.strftime('%A, %d %B %Y')"/></span>
                                 </div>
                             </div>
                             <table class="table table-borderless table-sm mt-3" style="font-size: 12px; border-collapse: collapse; line-height: 1.1;">
@@ -115,40 +94,66 @@
                                     <t t-foreach="order_groups" t-as="client_ref">
                                         <tr style="height: 35px">
                                             <td colspan="9" style="vertical-align: bottom">
-                                                <span style="font-weight: bold; font-size: 12px">ID Order: <t t-esc="client_ref"/></span>
+                                                <span style="font-weight: bold; font-size: 12px">ID Order:
+                                                    <t t-esc="client_ref"/>
+                                                </span>
                                             </td>
                                         </tr>
                                         <t t-foreach="order_groups[client_ref]['products']" t-as="product_name">
                                             <tr style="background-color: #a0a0a0;">
                                                 <td colspan="7" style="border: 1px solid black">
-                                                    <span style="font-weight: bold; font-size: 12px"><t t-esc="order_groups[client_ref]['products'][product_name]['default_code']"/> - <t t-esc="product_name"/></span>
+                                                    <span style="font-weight: bold; font-size: 12px">
+                                                        <t t-esc="order_groups[client_ref]['products'][product_name]['default_code']"/> -
+                                                        <t t-esc="product_name"/>
+                                                    </span>
                                                 </td>
                                                 <td style="border: 1px solid black" class="text-center">
-                                                    <span style="font-weight: bold; font-size: 12px"><t t-esc="'%.2f' % order_groups[client_ref]['products'][product_name].get('total_height', 0)"/></span>
+                                                    <span style="font-weight: bold; font-size: 12px">
+                                                        <t t-esc="'%.2f' % order_groups[client_ref]['products'][product_name].get('total_height', 0)"/> X
+                                                        <t t-esc="'%.2f' % order_groups[client_ref]['products'][product_name].get('total_width', 0)"/> X
+                                                        <t t-esc="'%.2f' % order_groups[client_ref]['products'][product_name].get('total_length', 0)"/>
+                                                    </span>
                                                 </td>
                                                 <td style="border: 1px solid black; text-align: right">
-                                                    <span style="font-weight: bold; font-size: 12px"><t t-esc="'%.2f' % order_groups[client_ref]['products'][product_name]['volume_packing']"/></span>
+                                                    <span style="font-weight: bold; font-size: 12px">
+                                                        <t t-esc="'%.2f' % order_groups[client_ref]['products'][product_name]['volume_packing']"/>
+                                                    </span>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td style="border: 1px solid black; text-align: right" class="text-center"><t t-esc="order_groups[client_ref]['due_date_order'].strftime('%d %b %y') if order_groups[client_ref]['due_date_order'] else '##'" /></td>
-                                                <td style="border: 1px solid black"><t t-esc="counter"/></td>
+                                                <td style="border: 1px solid black; text-align: right" class="text-center">
+                                                    <t t-esc="order_groups[client_ref]['due_date_order'].strftime('%d %b %y') if order_groups[client_ref]['due_date_order'] else '##'" />
+                                                </td>
+                                                <td style="border: 1px solid black">
+                                                    <t t-esc="counter"/>
+                                                </td>
                                                 <td style="border: 1px solid black;">##</td>
-                                                <td style="border: 1px solid black;"><t t-esc="', '.join(order_groups[client_ref]['products'][product_name]['color_attribute_sizes']) if order_groups[client_ref]['products'][product_name]['color_attribute_sizes'] else ''"/></td>
-                                                <td style="border: 1px solid black; text-align: right"><t t-esc="int(order_groups[client_ref]['products'][product_name]['qty'])"/></td>
-                                                <td style="border: 1px solid black; text-align: right">##</td>
-                                                <td style="border: 1px solid black; text-align: right"><t t-esc="'%.2f' % order_groups[client_ref]['products'][product_name]['volume_packing']"/></td>
-                                                <td style="border: 1px solid black;"><t t-esc="product_name"/></td>
+                                                <td style="border: 1px solid black;">
+                                                    <t t-esc="', '.join(order_groups[client_ref]['products'][product_name]['color_attribute_sizes']) if order_groups[client_ref]['products'][product_name]['color_attribute_sizes'] else ''"/>
+                                                </td>
+                                                <td style="border: 1px solid black; text-align: right">
+                                                    <t t-esc="int(order_groups[client_ref]['products'][product_name]['qty'])"/>
+                                                </td>
+                                                <td style="border: 1px solid black; text-align: right">
+                                                    <t t-esc="'%.2f' % order_groups[client_ref]['products'][product_name]['m3_kayu']"/>
+                                                </td>
+                                                <td style="border: 1px solid black; text-align: right">
+                                                    <t t-esc="'%.2f' % order_groups[client_ref]['products'][product_name]['volume_packing']"/>
+                                                </td>
+                                                <td style="border: 1px solid black;">
+                                                    <t t-esc="product_name"/>
+                                                </td>
                                                 <td style="border: 1px solid black;">##</td>
                                             </tr>
                                             <t t-set="counter" t-value="counter + 1"/>
                                         </t>
                                         <tr>
                                             <td colspan="8" style="text-align: right">
-                                            Total <t t-esc="client_ref"/> :
+                                            Total
+                                                <t t-esc="client_ref"/> :
                                             </td>
                                             <td style="text-align: right">
-                                            <t t-esc="'%.2f' % sum(order_groups[client_ref]['products'][p]['volume_packing'] for p in order_groups[client_ref]['products'])"/>
+                                                <t t-esc="'%.2f' % sum(order_groups[client_ref]['products'][p]['volume_packing'] for p in order_groups[client_ref]['products'])"/>
                                             </td>
                                         </tr>
                                     </t>
@@ -165,34 +170,46 @@
                                 </tr>
                                 <t t-set="total_qty" t-value="0"/>
                                 <t t-set="total_m3_pack" t-value="0"/>
+                                <t t-set="total_m3_wood" t-value="0"/>
                                 <t t-foreach="order_groups" t-as="ref">
                                     <t t-foreach="order_groups[ref]['products']" t-as="p">
                                         <t t-set="total_qty" t-value="total_qty + order_groups[ref]['products'][p]['qty']"/>
                                         <t t-set="total_m3_pack" t-value="total_m3_pack + order_groups[ref]['products'][p]['volume_packing']"/>
+                                        <t t-set="total_m3_wood" t-value="total_m3_wood + order_groups[ref]['products'][p]['m3_kayu']"/>
                                     </t>
                                 </t>
                                 <tr>
                                     <td style="font-weight: bold">Total</td>
-                                    <td style="border: 1px solid black; font-weight: bold;  text-align: center"><t t-esc="int(total_qty)"/></td>
-                                    <td style="border: 1px solid black; font-weight: bold;  text-align: center"><t t-esc="'%.2f' % total_m3_pack"/></td>
+                                    <td style="border: 1px solid black; font-weight: bold;  text-align: center">
+                                        <t t-esc="int(total_qty)"/>
+                                    </td>
+                                    <td style="border: 1px solid black; font-weight: bold;  text-align: center">
+                                        <t t-esc="'%.2f' % total_m3_pack"/>
+                                    </td>
                                     <td style="border: 1px solid black; font-weight: bold;  text-align: center">QTY</td>
                                     <td style="border: 1px solid black; font-weight: bold;  text-align: center">M3</td>
                                     <td></td>
-                                    <td style="font-size: 16px; font-weight: bold; background-color: #181a1c; color: white; vertical-align: middle; border: 1px solid black; text-align: center" >M3 NCT</td>
+                                    <td style="font-size: 16px; font-weight: bold; background-color: #181a1c; color: white; vertical-align: middle; border: 1px solid black; text-align: center">M3 WOOD / VLEGAL</td>
                                 </tr>
                                 <tr>
                                     <td style="font-weight: bold">Available</td>
-                                    <td style="border: 1px solid black; font-weight: bold;  text-align: center"><t t-esc="int(total_qty)"/></td>
-                                    <td style="border: 1px solid black; font-weight: bold;  text-align: center"><t t-esc="'%.2f' % total_m3_pack"/></td>
+                                    <td style="border: 1px solid black; font-weight: bold;  text-align: center">0</td>
+                                    <td style="border: 1px solid black; font-weight: bold;  text-align: center">0.00</td>
                                     <td style="border: 1px solid black; font-weight: bold;  text-align: center">0.00%</td>
                                     <td style="border: 1px solid black; font-weight: bold;  text-align: center">0.00%</td>
                                     <td></td>
-                                    <td style="font-size: 20px; font-weight: bold; vertical-align: middle; border: 1px solid black; text-align: center" rowspan="2"><t t-esc="'%.2f' % total_m3_pack"/></td>
+                                    <td style="font-size: 20px; font-weight: bold; vertical-align: middle; border: 1px solid black; text-align: center" rowspan="2">
+                                        <t t-esc="'%.2f' % total_m3_pack"/>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td style="font-weight: bold">Not Available</td>
-                                    <td style="border: 1px solid black; font-weight: bold;  text-align: center"><t t-esc="int(total_qty)"/></td>
-                                    <td style="border: 1px solid black; font-weight: bold;  text-align: center"><t t-esc="'%.2f' % total_m3_pack"/></td>
+                                    <td style="border: 1px solid black; font-weight: bold;  text-align: center">
+                                        <t t-esc="int(total_qty)"/>
+                                    </td>
+                                    <td style="border: 1px solid black; font-weight: bold;  text-align: center">
+                                        <t t-esc="'%.2f' % total_m3_pack"/>
+                                    </td>
                                     <td style="border: 1px solid black; font-weight: bold;  text-align: center">0.00%</td>
                                     <td style="border: 1px solid black; font-weight: bold;  text-align: center">0.00%</td>
                                     <td></td>
@@ -202,50 +219,52 @@
                                 </tr>
                                 <tr>
                                     <td style="font-weight: bold">s/d Snd Out</td>
-                                    <td style="border: 1px solid black; font-weight: bold;  text-align: center"><t t-esc="int(total_qty)"/></td>
-                                    <td style="border: 1px solid black; font-weight: bold;  text-align: center"><t t-esc="'%.2f' % total_m3_pack"/></td>
+                                    <td style="border: 1px solid black; font-weight: bold;  text-align: center">0</td>
+                                    <td style="border: 1px solid black; font-weight: bold;  text-align: center">0.00</td>
                                     <td style="border: 1px solid black; font-weight: bold;  text-align: center">0.00%</td>
                                     <td style="border: 1px solid black; font-weight: bold;  text-align: center">0.00%</td>
                                     <td></td>
-                                    <td style="font-size: 16px; font-weight: bold; background-color: #181a1c; color: white; vertical-align: middle; border: 1px solid black; text-align: center" >M3 NCT</td>
+                                    <td style="font-size: 16px; font-weight: bold; background-color: #181a1c; color: white; vertical-align: middle; border: 1px solid black; text-align: center">M3 WOOD / VLEGAL</td>
                                 </tr>
                                 <tr>
                                     <td style="font-weight: bold">Qc In</td>
-                                    <td style="border: 1px solid black; font-weight: bold;  text-align: center"><t t-esc="int(total_qty)"/></td>
-                                    <td style="border: 1px solid black; font-weight: bold;  text-align: center"><t t-esc="'%.2f' % total_m3_pack"/></td>
+                                    <td style="border: 1px solid black; font-weight: bold;  text-align: center">0</td>
+                                    <td style="border: 1px solid black; font-weight: bold;  text-align: center">0.00</td>
                                     <td style="border: 1px solid black; font-weight: bold;  text-align: center">0.00%</td>
                                     <td style="border: 1px solid black; font-weight: bold;  text-align: center">0.00%</td>
                                     <td></td>
-                                    <td style="font-size:20px; font-weight: bold; vertical-align: middle; border: 1px solid black; text-align: center" rowspan="2"><t t-esc="'%.2f' % total_m3_pack"/></td>
+                                    <td style="font-size:20px; font-weight: bold; vertical-align: middle; border: 1px solid black; text-align: center" rowspan="2">
+                                        <t t-esc="'%.2f' % total_m3_wood"/>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td style="font-weight: bold">Col In</td>
-                                    <td style="border: 1px solid black; font-weight: bold;  text-align: center"><t t-esc="int(total_qty)"/></td>
-                                    <td style="border: 1px solid black; font-weight: bold;  text-align: center"><t t-esc="'%.2f' % total_m3_pack"/></td>
+                                    <td style="border: 1px solid black; font-weight: bold;  text-align: center">0</td>
+                                    <td style="border: 1px solid black; font-weight: bold;  text-align: center">0.00</td>
                                     <td style="border: 1px solid black; font-weight: bold;  text-align: center">0.00%</td>
                                     <td style="border: 1px solid black; font-weight: bold;  text-align: center">0.00%</td>
                                     <td></td>
                                 </tr>
                                 <tr>
                                     <td style="font-weight: bold">Col Out</td>
-                                    <td style="border: 1px solid black; font-weight: bold;  text-align: center"><t t-esc="int(total_qty)"/></td>
-                                    <td style="border: 1px solid black; font-weight: bold;  text-align: center"><t t-esc="'%.2f' % total_m3_pack"/></td>
+                                    <td style="border: 1px solid black; font-weight: bold;  text-align: center">0</td>
+                                    <td style="border: 1px solid black; font-weight: bold;  text-align: center">0.00</td>
                                     <td style="border: 1px solid black; font-weight: bold;  text-align: center">0.00%</td>
                                     <td style="border: 1px solid black; font-weight: bold;  text-align: center">0.00%</td>
                                     <td></td>
                                 </tr>
                                 <tr>
                                     <td style="font-weight: bold">Fin Out</td>
-                                    <td style="border: 1px solid black; font-weight: bold;  text-align: center"><t t-esc="int(total_qty)"/></td>
-                                    <td style="border: 1px solid black; font-weight: bold;  text-align: center"><t t-esc="'%.2f' % total_m3_pack"/></td>
+                                    <td style="border: 1px solid black; font-weight: bold;  text-align: center">0</td>
+                                    <td style="border: 1px solid black; font-weight: bold;  text-align: center">0.00</td>
                                     <td style="border: 1px solid black; font-weight: bold;  text-align: center">0.00%</td>
                                     <td style="border: 1px solid black; font-weight: bold;  text-align: center">0.00%</td>
                                     <td></td>
                                 </tr>
                                 <tr>
                                     <td style="font-weight: bold">Storage</td>
-                                    <td style="border: 1px solid black; font-weight: bold;  text-align: center"><t t-esc="int(total_qty)"/></td>
-                                    <td style="border: 1px solid black; font-weight: bold;  text-align: center"><t t-esc="'%.2f' % total_m3_pack"/></td>
+                                    <td style="border: 1px solid black; font-weight: bold;  text-align: center">0</td>
+                                    <td style="border: 1px solid black; font-weight: bold;  text-align: center">0.00</td>
                                     <td style="border: 1px solid black; font-weight: bold;  text-align: center">0.00%</td>
                                     <td style="border: 1px solid black; font-weight: bold;  text-align: center">0.00%</td>
                                     <td></td>

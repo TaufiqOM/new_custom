@@ -12,13 +12,12 @@
                                 <div class="col-10">
                                     <h2 style="font-weight: bold; margin-bottom: -3px;">Pre Shipping Report</h2>
                                     <h5 style="font-weight: bold; margin-bottom: -3px;">
-                                        ID Shipping : TDZ/NZ445 | Shipping Date : 16 Juli 2025
+                                        ID Shipping :<span t-esc="doc.description"/> | Shipping Date : <t t-esc="doc.scheduled_date.strftime('%d %B %Y') if doc.scheduled_date else ''"/>
                                     </h5>
                                     <span style="font-weight: bold; display:block; margin-bottom: 3px;">
-                                        To: The Design Project, Home Ideas Centre, 165 The Strand, Pameli 1010,
-                                        Phone 0275202727 - New Zealand Attn. Marg Farrell
+                                        To: <t t-esc="doc.buyer"/>
                                     </span>
-                                    <span style="font-weight: bold;">Status Shipping : Confirmed | Status Container : Regular</span>
+                                    <span style="font-weight: bold;">Status Shipping : <t t-esc="dict(doc._fields['state'].selection).get(doc.state, '##')"/> | Status Container : ##</span>
                                 </div>
                                 <div class="col-2" style="text-align: center; top: 0">
                                     <t t-if="doc.company_id.logo">
@@ -26,14 +25,13 @@
                                              style="max-height: 100px; object-fit: contain;"
                                              alt="Company Logo"/>
                                     </t>
-                                    <div style="text-align: center; font-size: 9px; margin-top: -20px;">
-                                        <t t-set="now" t-value="datetime.datetime.utcnow() + datetime.timedelta(hours=7)"/>
-                                        <span>Printed on :
-                                            <t t-esc="now.strftime('%d %b %Y %H:%M:%S')"/> (UTC+7)
-                                        </span>
-                                        <div style="font-size:20px; font-weight: bold">1 x 40FT
+                                        <div style="text-align: center; font-size: 9px; margin-top: -20px;">
+                                            <t t-set="now" t-value="datetime.datetime.utcnow() + datetime.timedelta(hours=7)"/>
+                                            <span>Printed on :
+                                                <t t-esc="now.strftime('%d %b %Y %H:%M:%S')"/> (UTC+7)
+                                            </span>
+                                            <div style="font-size:20px; font-weight: bold"><t t-esc="doc.jenis_kontainer or '##'"/></div>
                                         </div>
-                                    </div>
                                 </div>
                             </div>
                             <!-- TABLE HEADER -->
@@ -108,69 +106,88 @@
                                     <tr>
                                         <td colspan="17" style="height: 1px"></td>
                                     </tr>
-                                    <!-- Group header row: colspan=8 will span columns 1..8 (sampai AV) -->
-                                    <tr style="color: black; border: 1px solid black;">
-                                        <td style="border: 1px solid black;" colspan="8">
-                                            <span>ID Order :</span>
-                                            <h3 style="margin: 2px 0; font-weight: bold">TDP250411PANEL14</h3>
-                                        </td>
-                                        <!-- next colspan 4 will cover kolom 9..12 (RAW, KD, Out, SND) -->
-                                        <td style="border: 1px solid black;" colspan="4">
-                                            <span>Due Date :</span>
-                                            <h3 style="margin: 2px 0; font-weight: bold">29 Apr 2025</h3>
-                                        </td>
-                                        <!-- terakhir colspan 5 menutup kolom 13..17 (QCIN..STR) -->
-                                        <td style="border: 1px solid black;" colspan="5">
-                                            <span>Order Due Date Update :</span>
-                                            <h3 style="margin: 2px 0; font-weight: bold">23 May 2025</h3>
-                                        </td>
-                                    </tr>
-                                    <!-- Data row: setiap <td> merepresentasikan 1 kolom sesuai colgroup -->
-                                    <tr style="color: black; border: 1px solid black; text-align: center;">
-                                        <td style="border: 1px solid black;">FOTO</td>
-                                        <td style="border: 1px solid black;">20999</td>
-                                        <td style="border: 1px solid black; text-align:left; padding-left:4px;">Part of Goods</td>
-                                        <td style="border: 1px solid black;"></td>
-                                        <td style="border: 1px solid black;">5</td>
-                                        <td style="border: 1px solid black; text-align:left; padding-left:4px;">TDP250411PANEL14 - Sungkai</td>
-                                        <!-- small columns 7..17 -->
-                                        <td style="border: 1px solid black;">1</td>
-                                        <!-- SHP -->
-                                        <td style="border: 1px solid black;">0</td>
-                                        <!-- AV -->
-                                        <td style="border: 1px solid black;">0</td>
-                                        <!-- RAW -->
-                                        <td style="border: 1px solid black;">0</td>
-                                        <!-- KD -->
-                                        <td style="border: 1px solid black;">0</td>
-                                        <!-- Out -->
-                                        <td style="border: 1px solid black;">0</td>
-                                        <!-- SND -->
-                                        <td style="border: 1px solid black;">0</td>
-                                        <!-- QCIN -->
-                                        <td style="border: 1px solid black;">0</td>
-                                        <!-- CLR -->
-                                        <td style="border: 1px solid black;">0</td>
-                                        <!-- QCFIN -->
-                                        <td style="border: 1px solid black;">0</td>
-                                        <!-- FinP -->
-                                        <td style="border: 1px solid black;">0</td>
-                                        <!-- STR -->
-                                    </tr>
+                                    <!-- Group by sale_id -->
+                                    <t t-set="sale_groups" t-value="{}"/>
+                                    <t t-foreach="doc.picking_ids" t-as="picking">
+                                        <t t-foreach="picking.move_ids" t-as="move">
+                                            <t t-set="sale_id" t-value="picking.sale_id.name or '##'" />
+                                            <t t-if="sale_id not in sale_groups">
+                                                <t t-set="sale_groups" t-value="dict(sale_groups, **{sale_id: {'moves': [], 'due_date': picking.sale_id.commitment_date or '##', 'update_date': '##'}})"/>
+                                            </t>
+                                            <t t-set="sale_groups" t-value="dict(sale_groups, **{sale_id: {'moves': sale_groups[sale_id]['moves'] + [move], 'due_date': sale_groups[sale_id]['due_date'], 'update_date': sale_groups[sale_id]['update_date']}})"/>
+                                        </t>
+                                    </t>
+                                    <t t-foreach="sale_groups" t-as="sale_id">
+                                        <t t-set="group_data" t-value="sale_groups[sale_id]"/>
+                                        <!-- Group header row: colspan=8 will span columns 1..8 (sampai AV) -->
+                                        <tr style="color: black; border: 1px solid black;">
+                                            <td style="border: 1px solid black;" colspan="8">
+                                                <span>ID Order :</span>
+                                                <h3 style="margin: 2px 0; font-weight: bold"><t t-esc="sale_id"/></h3>
+                                            </td>
+                                            <!-- next colspan 4 will cover kolom 9..12 (RAW, KD, Out, SND) -->
+                                            <td style="border: 1px solid black;" colspan="4">
+                                                <span>Due Date :</span>
+                                                <h3 style="margin: 2px 0; font-weight: bold"><t t-esc="group_data['due_date'].strftime('%d %b %Y') if group_data['due_date'] != '##' else '##'"/></h3>
+                                            </td>
+                                            <!-- terakhir colspan 5 menutup kolom 13..17 (QCIN..STR) -->
+                                            <td style="border: 1px solid black;" colspan="5">
+                                                <span>Order Due Date Update :</span>
+                                                <h3 style="margin: 2px 0; font-weight: bold"><t t-esc="group_data['update_date']"/></h3>
+                                            </td>
+                                        </tr>
+                                        <!-- Data rows for each move in the group -->
+                                        <t t-foreach="group_data['moves']" t-as="move">
+                                            <tr style="color: black; border: 1px solid black; text-align: center;">
+                                                <td style="border: 1px solid black; text-align: center; vertical-align: middle;">
+                                                    <img t-if="move.product_id.image_1920" t-att-src="'data:image/png;base64,%s' % (move.product_id.image_1920.decode())" style="max-width: 100%; max-height: 80px; object-fit: contain;" alt="Product Image"/>
+                                                    <t t-else="">##</t>
+                                                </td>
+                                                <td style="border: 1px solid black;"><t t-esc="move.product_id.default_code or '##'"/></td>
+                                                <td style="border: 1px solid black; text-align:left; padding-left:4px;"><t t-esc="move.product_id.name or '##'"/></td>
+                                                <td style="border: 1px solid black;"><t t-esc="move.product_id.color or '##'"/></td>
+                                                <td style="border: 1px solid black;"><t t-esc="move.product_id.list_price or '##'"/></td>
+                                                <td style="border: 1px solid black; text-align:left; padding-left:4px;"><t t-esc="sale_id + ' - ' + (move.product_id.name or '##')"/></td>
+                                                <!-- small columns 7..17 -->
+                                                <td style="border: 1px solid black;">##</td>
+                                                <!-- SHP -->
+                                                <td style="border: 1px solid black;">##</td>
+                                                <!-- AV -->
+                                                <td style="border: 1px solid black;">##</td>
+                                                <!-- RAW -->
+                                                <td style="border: 1px solid black;">##</td>
+                                                <!-- KD -->
+                                                <td style="border: 1px solid black;">##</td>
+                                                <!-- Out -->
+                                                <td style="border: 1px solid black;">##</td>
+                                                <!-- SND -->
+                                                <td style="border: 1px solid black;">##</td>
+                                                <!-- QCIN -->
+                                                <td style="border: 1px solid black;">##</td>
+                                                <!-- CLR -->
+                                                <td style="border: 1px solid black;">##</td>
+                                                <!-- QCFIN -->
+                                                <td style="border: 1px solid black;">##</td>
+                                                <!-- FinP -->
+                                                <td style="border: 1px solid black;">##</td>
+                                                <!-- STR -->
+                                            </tr>
+                                        </t>
+                                    </t>
                                     <tr style="background-color: #a0a0a0; color: black; border: 1px solid black; font-size: 11px; line-height: 1.1;"
                                         class="align-middle">
                                         <th class="text-right" style="border: 1px solid black; font-weight: bold;" colspan="6">Grand Total :</th>
-                                        <th class="text-center" style="border: 1px solid black; font-weight: bold;">1</th>
-                                        <th class="text-center" style="border: 1px solid black; font-weight: bold;">0</th>
-                                        <th class="text-center" style="border: 1px solid black; font-weight: bold;">0</th>
-                                        <th class="text-center" style="border: 1px solid black; font-weight: bold;">0</th>
-                                        <th class="text-center" style="border: 1px solid black; font-weight: bold;">0</th>
-                                        <th class="text-center" style="border: 1px solid black; font-weight: bold;">0</th>
-                                        <th class="text-center" style="border: 1px solid black; font-weight: bold;">0</th>
-                                        <th class="text-center" style="border: 1px solid black; font-weight: bold;">0</th>
-                                        <th class="text-center" style="border: 1px solid black; font-weight: bold;">0</th>
-                                        <th class="text-center" style="border: 1px solid black; font-weight: bold;">0</th>
-                                        <th class="text-center" style="border: 1px solid black; font-weight: bold;">0</th>
+                                        <th class="text-center" style="border: 1px solid black; font-weight: bold;">##</th>
+                                        <th class="text-center" style="border: 1px solid black; font-weight: bold;">##</th>
+                                        <th class="text-center" style="border: 1px solid black; font-weight: bold;">##</th>
+                                        <th class="text-center" style="border: 1px solid black; font-weight: bold;">##</th>
+                                        <th class="text-center" style="border: 1px solid black; font-weight: bold;">##</th>
+                                        <th class="text-center" style="border: 1px solid black; font-weight: bold;">##</th>
+                                        <th class="text-center" style="border: 1px solid black; font-weight: bold;">##</th>
+                                        <th class="text-center" style="border: 1px solid black; font-weight: bold;">##</th>
+                                        <th class="text-center" style="border: 1px solid black; font-weight: bold;">##</th>
+                                        <th class="text-center" style="border: 1px solid black; font-weight: bold;">##</th>
+                                        <th class="text-center" style="border: 1px solid black; font-weight: bold;">##</th>
                                     </tr>
                                      <tr>
                                         <td colspan="17" style="height: 1px"></td>
@@ -180,7 +197,7 @@
                                         <td style="background-color: #181a1c; color: white; font-size:11px;" class="text-center align-middle p-1" colspan="17">Remark (Internal)</td>
                                     </tr>
                                      <tr>
-                                        <td colspan="17" style="border: 1px solid black">None</td>
+                                        <td colspan="17" style="border: 1px solid black">##</td>
                                     </tr>
                                 </tbody>
                             </table>

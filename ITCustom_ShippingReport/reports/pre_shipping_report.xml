@@ -108,6 +108,16 @@
                                     <!-- Group by sale_id -->
                                     <t t-set="sale_groups" t-value="{}"/>
                                     <t t-set="total_qty" t-value="0"/>
+                                    <t t-set="total_av" t-value="0"/>
+                                    <t t-set="total_raw" t-value="0"/>
+                                    <t t-set="total_kd" t-value="0"/>
+                                    <t t-set="total_out" t-value="0"/>
+                                    <t t-set="total_snd" t-value="0"/>
+                                    <t t-set="total_qcin" t-value="0"/>
+                                    <t t-set="total_clr" t-value="0"/>
+                                    <t t-set="total_qfin" t-value="0"/>
+                                    <t t-set="total_finp" t-value="0"/>
+                                    <t t-set="total_str" t-value="0"/>
                                     <t t-foreach="doc.picking_ids" t-as="picking">
                                         <t t-foreach="picking.move_ids" t-as="move">
                                             <t t-set="sale_id" t-value="picking.sale_id.client_order_ref or '##'"/>
@@ -134,11 +144,13 @@
                                             <!-- terakhir colspan 5 menutup kolom 13..17 (QCIN..STR) -->
                                             <td style="border: 1px solid black;" colspan="5">
                                                 <span>Order Due Date Update :</span>
-                                                <h3 style="margin: 2px 0; font-weight: bold"><t t-esc="group_data['update_date'].strftime('%d %b %Y') if group_data['update_date'] != '##' else '##'"/></h3>
+                                                <h3 style="margin: 2px 0; font-weight: bold"><t t-esc="group_data['update_date'].strftime('%d %b %Y') if group_data['update_date'] != '##' else ''"/></h3>
                                             </td>
                                         </tr>
                                         <!-- Data rows for each move in the group -->
                                         <t t-foreach="group_data['moves']" t-as="move">
+                                            <t t-set="sale_lines" t-value="move.picking_id.sale_id and move.picking_id.sale_id.order_line.filtered(lambda l: l.product_id == move.product_id) or []"/>
+                                            <t t-set="unit_price" t-value="sale_lines and sale_lines[0].price_unit or move.product_id.list_price"/>
                                             <tr style="color: black; border: 1px solid black; text-align: center;">
                                                 <td style="border: 1px solid black; text-align: center; vertical-align: middle;">
                                                     <img t-if="move.product_id.image_1920" t-att-src="'data:image/png;base64,%s' % (move.product_id.image_1920.decode())" style="max-width: 100%; max-height: 80px; object-fit: contain;" alt="Product Image"/>
@@ -147,7 +159,7 @@
                                                 <td style="border: 1px solid black;"><t t-esc="move.product_id.default_code or '##'"/></td>
                                                 <td style="border: 1px solid black; text-align:left; padding-left:4px;"><t t-esc="move.product_id.name or '##'"/></td>
                                                 <td style="border: 1px solid black;"><t t-esc="move.sale_line_id.color_attribute_size or ''"/></td>
-                                                <td style="border: 1px solid black;"><t t-esc="move.product_id.list_price or '##'"/></td>
+                                                <td style="border: 1px solid black;"><t t-esc="'{0:,.2f}'.format(unit_price)"/></td>
                                                 <td style="border: 1px solid black; text-align:left; padding-left:4px;"><t t-esc="sale_id + ' - ' + (move.product_id.name or '##')"/></td>
                                                 <!-- small columns 7..17 -->
                                                 <td style="border: 1px solid black;"><t t-esc="move.quantity"/></td>
@@ -177,18 +189,18 @@
                                     </t>
                                     <tr style="background-color: #a0a0a0; color: black; border: 1px solid black; font-size: 11px; line-height: 1.1;"
                                         class="align-middle">
-                                        <th class="text-right" style="border: 1px solid black; font-weight: bold;" colspan="6">Grand Total :</th>
+                                        <th style="text-align: right; border: 1px solid black; font-weight: bold;" colspan="6">Grand Total :</th>
                                         <th class="text-center" style="border: 1px solid black; font-weight: bold;"><t t-esc="total_qty"/></th>
-                                        <th class="text-center" style="border: 1px solid black; font-weight: bold;">##</th>
-                                        <th class="text-center" style="border: 1px solid black; font-weight: bold;">##</th>
-                                        <th class="text-center" style="border: 1px solid black; font-weight: bold;">##</th>
-                                        <th class="text-center" style="border: 1px solid black; font-weight: bold;">##</th>
-                                        <th class="text-center" style="border: 1px solid black; font-weight: bold;">##</th>
-                                        <th class="text-center" style="border: 1px solid black; font-weight: bold;">##</th>
-                                        <th class="text-center" style="border: 1px solid black; font-weight: bold;">##</th>
-                                        <th class="text-center" style="border: 1px solid black; font-weight: bold;">##</th>
-                                        <th class="text-center" style="border: 1px solid black; font-weight: bold;">##</th>
-                                        <th class="text-center" style="border: 1px solid black; font-weight: bold;">##</th>
+                                        <th class="text-center" style="border: 1px solid black; font-weight: bold;"><t t-esc="total_av"/></th>
+                                        <th class="text-center" style="border: 1px solid black; font-weight: bold;"><t t-esc="total_raw"/></th>
+                                        <th class="text-center" style="border: 1px solid black; font-weight: bold;"><t t-esc="total_kd"/></th>
+                                        <th class="text-center" style="border: 1px solid black; font-weight: bold;"><t t-esc="total_out"/></th>
+                                        <th class="text-center" style="border: 1px solid black; font-weight: bold;"><t t-esc="total_snd"/></th>
+                                        <th class="text-center" style="border: 1px solid black; font-weight: bold;"><t t-esc="total_qcin"/></th>
+                                        <th class="text-center" style="border: 1px solid black; font-weight: bold;"><t t-esc="total_clr"/></th>
+                                        <th class="text-center" style="border: 1px solid black; font-weight: bold;"><t t-esc="total_qfin"/></th>
+                                        <th class="text-center" style="border: 1px solid black; font-weight: bold;"><t t-esc="total_finp"/></th>
+                                        <th class="text-center" style="border: 1px solid black; font-weight: bold;"><t t-esc="total_str"/></th>
                                     </tr>
                                      <tr>
                                         <td colspan="17" style="height: 1px"></td>
@@ -198,7 +210,7 @@
                                         <td style="background-color: #181a1c; color: white; font-size:11px;" class="text-center align-middle p-1" colspan="17">Remark (Internal)</td>
                                     </tr>
                                      <tr>
-                                        <td colspan="17" style="border: 1px solid black">##</td>
+                                        <td colspan="17" style="border: 1px solid black"><span t-esc="doc.remark_int"/></td>
                                     </tr>
                                 </tbody>
                             </table>

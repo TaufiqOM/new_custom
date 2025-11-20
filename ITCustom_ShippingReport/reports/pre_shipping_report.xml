@@ -43,45 +43,44 @@
                                             table-layout: fixed;
                                             width: 100%;
                                             border-collapse: collapse;">
-                                <!-- define 17 columns explicitly so colspan counts map correctly -->
                                 <colgroup>
                                     <col style="width:7%;" />
-                                    <!-- 1 Picture -->
-                                    <col style="width:3.5%;" />
-                                    <!-- 2 Prod. ID -->
-                                    <col style="width:14.5%;" />
-                                    <!-- 3 Product Name -->
-                                    <col style="width:3.5%;" />
-                                    <!-- 4 Color -->
-                                    <col style="width:3.5%;" />
-                                    <!-- 5 Price -->
-                                    <col style="width:18%;" />
-                                    <!-- 6 Product Extra Info -->
-                                    <col style="width:3.3%;" />
-                                    <!-- 7 SHP -->
-                                    <col style="width:3.3%;" />
-                                    <!-- 8 AV -->
-                                    <col style="width:3.3%;" />
-                                    <!-- 9 RAW -->
-                                    <col style="width:3.3%;" />
-                                    <!-- 10 KD -->
-                                    <col style="width:3.3%;" />
-                                    <!-- 11 Out -->
-                                    <col style="width:3.3%;" />
-                                    <!-- 12 SND -->
-                                    <col style="width:3.3%;" />
-                                    <!-- 13 QCIN -->
-                                    <col style="width:3.3%;" />
-                                    <!-- 14 CLR -->
+                                    <!-- Picture -->
+                                    <col style="width:4.5%;" />
+                                    <!-- Prod. ID -->
+                                    <col style="width:14%;" />
+                                    <!-- Product Name -->
                                     <col style="width:4%;" />
-                                    <!-- 15 QCFIN -->
-                                    <col style="width:3.3%;" />
-                                    <!-- 16 FinP -->
-                                    <col style="width:3.3%;" />
-                                    <!-- 17 STR -->
+                                    <!-- Color -->
+                                    <col style="width:4.5%;" />
+                                    <!-- Price -->
+                                    <col style="width:19%;" />
+                                    <!-- Product Extra Info To Buyer -->
+                                    <col style="width:3.5%;" />
+                                    <!-- SHP -->
+                                    <col style="width:3.5%;" />
+                                    <!-- AV -->
+                                    <col style="width:3.5%;" />
+                                    <!-- RAW -->
+                                    <col style="width:3.5%;" />
+                                    <!-- KD -->
+                                    <col style="width:3.5%;" />
+                                    <!-- Out -->
+                                    <col style="width:3.5%;" />
+                                    <!-- SND -->
+                                    <col style="width:4%;" />
+                                    <!-- QCIN -->
+                                    <col style="width:3.5%;" />
+                                    <!-- CLR -->
+                                    <col style="width:4.2%;" />
+                                    <!-- QCFIN -->
+                                    <col style="width:3.5%;" />
+                                    <!-- FinP -->
+                                    <col style="width:3.5%;" />
+                                    <!-- STR -->
                                 </colgroup>
                                 <thead>
-                                    <tr style="background-color: #a0a0a0; color: black; border: 1px solid black; font-size: 11px; line-height: 1.1;"
+                                    <tr style="background-color: #a0a0a0; color: black; border: 1px solid black; font-size: 12px; line-height: 1.1;"
                                         class="text-center align-middle">
                                         <th class="text-center" style="border: 1px solid black; font-weight: bold;">Picture</th>
                                         <th class="text-center" style="border: 1px solid black; font-weight: bold;">Prod. ID</th>
@@ -108,13 +107,15 @@
                                     </tr>
                                     <!-- Group by sale_id -->
                                     <t t-set="sale_groups" t-value="{}"/>
+                                    <t t-set="total_qty" t-value="0"/>
                                     <t t-foreach="doc.picking_ids" t-as="picking">
                                         <t t-foreach="picking.move_ids" t-as="move">
-                                            <t t-set="sale_id" t-value="picking.sale_id.name or '##'" />
+                                            <t t-set="sale_id" t-value="picking.sale_id.client_order_ref or '##'"/>
                                             <t t-if="sale_id not in sale_groups">
-                                                <t t-set="sale_groups" t-value="dict(sale_groups, **{sale_id: {'moves': [], 'due_date': picking.sale_id.commitment_date or '##', 'update_date': '##'}})"/>
+                                                <t t-set="sale_groups" t-value="dict(sale_groups, **{sale_id: {'moves': [], 'due_date': picking.sale_id.due_date_order or '##', 'update_date': picking.sale_id.due_date_update_order or '##'}})"/>
                                             </t>
                                             <t t-set="sale_groups" t-value="dict(sale_groups, **{sale_id: {'moves': sale_groups[sale_id]['moves'] + [move], 'due_date': sale_groups[sale_id]['due_date'], 'update_date': sale_groups[sale_id]['update_date']}})"/>
+                                            <t t-set="total_qty" t-value="total_qty + move.quantity"/>
                                         </t>
                                     </t>
                                     <t t-foreach="sale_groups" t-as="sale_id">
@@ -128,12 +129,12 @@
                                             <!-- next colspan 4 will cover kolom 9..12 (RAW, KD, Out, SND) -->
                                             <td style="border: 1px solid black;" colspan="4">
                                                 <span>Due Date :</span>
-                                                <h3 style="margin: 2px 0; font-weight: bold"><t t-esc="group_data['due_date'].strftime('%d %b %Y') if group_data['due_date'] != '##' else '##'"/></h3>
+                                                <h5 style="margin: 2px 0; font-weight: bold"><t t-esc="group_data['due_date'].strftime('%d %b %Y') if group_data['due_date'] != '##' else '##'"/></h5>
                                             </td>
                                             <!-- terakhir colspan 5 menutup kolom 13..17 (QCIN..STR) -->
                                             <td style="border: 1px solid black;" colspan="5">
                                                 <span>Order Due Date Update :</span>
-                                                <h3 style="margin: 2px 0; font-weight: bold"><t t-esc="group_data['update_date']"/></h3>
+                                                <h3 style="margin: 2px 0; font-weight: bold"><t t-esc="group_data['update_date'].strftime('%d %b %Y') if group_data['update_date'] != '##' else '##'"/></h3>
                                             </td>
                                         </tr>
                                         <!-- Data rows for each move in the group -->
@@ -145,31 +146,31 @@
                                                 </td>
                                                 <td style="border: 1px solid black;"><t t-esc="move.product_id.default_code or '##'"/></td>
                                                 <td style="border: 1px solid black; text-align:left; padding-left:4px;"><t t-esc="move.product_id.name or '##'"/></td>
-                                                <td style="border: 1px solid black;"><t t-esc="move.product_id.color or '##'"/></td>
+                                                <td style="border: 1px solid black;"><t t-esc="move.sale_line_id.color_attribute_size or ''"/></td>
                                                 <td style="border: 1px solid black;"><t t-esc="move.product_id.list_price or '##'"/></td>
                                                 <td style="border: 1px solid black; text-align:left; padding-left:4px;"><t t-esc="sale_id + ' - ' + (move.product_id.name or '##')"/></td>
                                                 <!-- small columns 7..17 -->
-                                                <td style="border: 1px solid black;">##</td>
+                                                <td style="border: 1px solid black;"><t t-esc="move.quantity"/></td>
                                                 <!-- SHP -->
-                                                <td style="border: 1px solid black;">##</td>
+                                                <td style="border: 1px solid black;"><t t-esc="move.sale_line_id.production_av or ''"/></td>
                                                 <!-- AV -->
-                                                <td style="border: 1px solid black;">##</td>
+                                                <td style="border: 1px solid black;"><t t-esc="move.sale_line_id.production_raw or ''"/></td>
                                                 <!-- RAW -->
-                                                <td style="border: 1px solid black;">##</td>
+                                                <td style="border: 1px solid black;"><t t-esc="move.sale_line_id.production_rpr or ''"/></td>
                                                 <!-- KD -->
-                                                <td style="border: 1px solid black;">##</td>
+                                                <td style="border: 1px solid black;"><t t-esc="move.sale_line_id.production_rtr or ''"/></td>
                                                 <!-- Out -->
-                                                <td style="border: 1px solid black;">##</td>
+                                                <td style="border: 1px solid black;"><t t-esc="move.sale_line_id.production_snd or ''"/></td>
                                                 <!-- SND -->
-                                                <td style="border: 1px solid black;">##</td>
+                                                <td style="border: 1px solid black;"><t t-esc="move.sale_line_id.production_qcin or ''"/></td>
                                                 <!-- QCIN -->
-                                                <td style="border: 1px solid black;">##</td>
+                                                <td style="border: 1px solid black;"><t t-esc="move.sale_line_id.production_clr or ''"/></td>
                                                 <!-- CLR -->
-                                                <td style="border: 1px solid black;">##</td>
+                                                <td style="border: 1px solid black;"><t t-esc="move.sale_line_id.production_qfin or ''"/></td>
                                                 <!-- QCFIN -->
-                                                <td style="border: 1px solid black;">##</td>
+                                                <td style="border: 1px solid black;"><t t-esc="move.sale_line_id.production_finp or ''"/></td>
                                                 <!-- FinP -->
-                                                <td style="border: 1px solid black;">##</td>
+                                                <td style="border: 1px solid black;"><t t-esc="move.sale_line_id.production_str or ''"/></td>
                                                 <!-- STR -->
                                             </tr>
                                         </t>
@@ -177,7 +178,7 @@
                                     <tr style="background-color: #a0a0a0; color: black; border: 1px solid black; font-size: 11px; line-height: 1.1;"
                                         class="align-middle">
                                         <th class="text-right" style="border: 1px solid black; font-weight: bold;" colspan="6">Grand Total :</th>
-                                        <th class="text-center" style="border: 1px solid black; font-weight: bold;">##</th>
+                                        <th class="text-center" style="border: 1px solid black; font-weight: bold;"><t t-esc="total_qty"/></th>
                                         <th class="text-center" style="border: 1px solid black; font-weight: bold;">##</th>
                                         <th class="text-center" style="border: 1px solid black; font-weight: bold;">##</th>
                                         <th class="text-center" style="border: 1px solid black; font-weight: bold;">##</th>

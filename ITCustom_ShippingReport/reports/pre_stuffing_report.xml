@@ -160,9 +160,9 @@
                                                 </td>
                                             </tr>
                                             <tr style="border: 1px solid black; font-size: 14px; line-height: 1;" class="align-middle">
-                                                <td style="border: 1px solid black; font-weight: 900; padding: 2px 4px;">
-                                                    29 Aug 25
-                                                </td>
+                                            <td style="border: 1px solid black; font-weight: 900; padding: 2px 4px;">
+                                                <t t-esc="order_groups[client_ref]['products'][product_name]['due_date'].strftime('%d %b %y') if order_groups[client_ref]['products'][product_name]['due_date'] else '##'"/>
+                                            </td>
                                                 <td style="border: 1px solid black; font-weight: 900; padding: 2px 4px;">
                                                     165314
                                                 </td>

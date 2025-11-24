@@ -54,23 +54,53 @@
                                 <t t-if="picking.sale_id and picking.sale_id.client_order_ref">
                                     <t t-set="client_ref" t-value="picking.sale_id.client_order_ref"/>
                                     <t t-if="client_ref not in order_groups">
-                                        <t t-set="order_groups" t-value="dict(order_groups, **{client_ref: {}})"/>
+                                        <t t-set="order_groups" t-value="dict(order_groups, **{client_ref: {'due_date_order': picking.sale_id.due_date_order, 'products': {}}})"/>
                                     </t>
                                     <t t-foreach="picking.move_ids" t-as="move">
                                         <t t-set="product_name" t-value="move.product_id.name or 'N/A'"/>
                                         <t t-set="sale_lines" t-value="move.picking_id.sale_id and move.picking_id.sale_id.order_line.filtered(lambda l: l.product_id == move.product_id) or []"/>
                                         <t t-set="info_to_production" t-value="sale_lines and sale_lines[0].info_to_production or '##'"/>
-                                        <t t-if="product_name not in order_groups[client_ref]">
-                                            <t t-set="order_groups" t-value="dict(order_groups, **{client_ref: dict(order_groups[client_ref], **{product_name: {'qty': 0, 'default_code': move.product_id.default_code or '##', 'due_date': picking.sale_id.due_date_order or '##', 'barcodes': [], 'info_to_production': info_to_production}})})"/>
+                                        <t t-if="product_name not in order_groups[client_ref]['products']">
+                                            <t t-set="order_groups" t-value="dict(order_groups, **{
+                                                client_ref: dict(order_groups[client_ref], **{
+                                                    'products': dict(order_groups[client_ref]['products'], **{
+                                                        product_name: {
+                                                            'qty': 0,
+                                                            'default_code': move.product_id.default_code or '##',
+                                                            'due_date': picking.sale_id.due_date_order or '##',
+                                                            'barcodes': [],
+                                                            'info_to_production': info_to_production,
+                                                            'total_height': sum(p.height for p in move.product_id.packaging_ids if p.height) or 0,
+                                                            'total_width': sum((p.width or 0) for p in move.product_id.packaging_ids) or 0,
+                                                            'total_length': sum((p.packaging_length or 0) for p in move.product_id.packaging_ids) or 0
+                                                        }
+                                                    })
+                                                })
+                                            })"/>
                                         </t>
-                                        <t t-set="current" t-value="order_groups[client_ref][product_name]"/>
+                                        <t t-set="current" t-value="order_groups[client_ref]['products'][product_name]"/>
                                         <t t-set="new_barcodes" t-value="current['barcodes']"/>
                                         <t t-foreach="move.move_line_ids" t-as="line">
                                             <t t-if="line.lot_id">
                                                 <t t-set="new_barcodes" t-value="new_barcodes + [line.lot_id.name]"/>
                                             </t>
                                         </t>
-                                        <t t-set="order_groups" t-value="dict(order_groups, **{client_ref: dict(order_groups[client_ref], **{product_name: {'qty': current['qty'] + move.quantity, 'default_code': current['default_code'], 'due_date': current['due_date'], 'barcodes': new_barcodes, 'info_to_production': current['info_to_production']}})})"/>
+                                        <t t-set="order_groups" t-value="dict(order_groups, **{
+                                            client_ref: dict(order_groups[client_ref], **{
+                                                'products': dict(order_groups[client_ref]['products'], **{
+                                                    product_name: {
+                                                        'qty': current['qty'] + move.quantity,
+                                                        'default_code': current['default_code'],
+                                                        'due_date': current['due_date'],
+                                                        'barcodes': new_barcodes,
+                                                        'info_to_production': current['info_to_production'],
+                                                        'total_height': current['total_height'],
+                                                        'total_width': current['total_width'],
+                                                        'total_length': current['total_length']
+                                                    }
+                                                })
+                                            })
+                                        })"/>
                                     </t>
                                 </t>
                             </t>
@@ -81,11 +111,11 @@
                                     <col style="width: 10%"/>
                                     <col style="width: 10%"/>
                                     <col style="width: 10%"/>
-                                    <col style="width: 8%"/>
-                                    <col style="width: 8%"/>
-                                    <col style="width: 8%"/>
-                                    <col style="width: 14%"/>
-                                    <col style="width: 18%"/>
+                                    <col style="width: 6%"/>
+                                    <col style="width: 10%"/>
+                                    <col style="width: 10%"/>
+                                    <col style="width: 17%"/>
+                                    <col style="width: 13%"/>
                                 </colgroup>
                                 <thead>
                                     <tr style="background-color: #a0a0a0; color: black; border: 1px solid black; font-size: 16px; line-height: 1;" class="text-center align-middle">
@@ -106,8 +136,8 @@
                                     </tr>
                                     <t t-foreach="order_groups" t-as="client_ref">
                                         <t t-set="has_barcodes" t-value="False"/>
-                                        <t t-foreach="order_groups[client_ref]" t-as="product_name">
-                                            <t t-if="order_groups[client_ref][product_name]['barcodes']">
+                                        <t t-foreach="order_groups[client_ref]['products']" t-as="product_name">
+                                            <t t-if="order_groups[client_ref]['products'][product_name]['barcodes']">
                                                 <t t-set="has_barcodes" t-value="True"/>
                                             </t>
                                         </t>
@@ -119,67 +149,43 @@
                                                 <td style="border: 1px solid black; font-weight: 900; padding: 2px 4px;" colspan="6">
                                                     <t t-esc="product_name"/>
                                                 </td>
-                                                <td style="border: 1px solid black; font-weight: 900; padding: 2px 4px;">
-                                                xx
+                                                <td style="border: 1px solid black; font-weight: 900; padding: 2px 4px; text-align: center;">
+                                                    <span style="font-weight: bold; font-size: 13px;">
+                                                        <t t-esc="'%.1f' % order_groups[client_ref]['products'][product_name].get('total_height', 0)"/> X
+                                                        <t t-esc="'%.1f' % order_groups[client_ref]['products'][product_name].get('total_width', 0)"/> X
+                                                        <t t-esc="'%.1f' % order_groups[client_ref]['products'][product_name].get('total_length', 0)"/>
+                                                    </span>
                                                 </td>
                                                 <td style="border: 1px solid black; font-weight: 900; padding: 2px 4px;">
                                                 </td>
                                             </tr>
-                                            <t t-foreach="order_groups[client_ref]" t-as="product_name">
-                                                <t t-if="order_groups[client_ref][product_name]['barcodes']">
-                                                    <tr style="background-color: #cfcfcfff; color: black; border: 1px solid black; font-size: 16px; line-height: 1;" class="align-middle">
-                                                        <td style="border: 1px solid black; padding: 2px 4px;" colspan="2">
-                                                            <t t-esc="order_groups[client_ref][product_name]['default_code']"/>
-                                                        </td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td style="border: 1px solid black; padding: 2px 4px;" colspan="3">
-                                                            <t t-esc="product_name"/>
-                                                        </td>
-                                                    </tr>
-                                                    <tr style="border: 1px solid black; font-size: 16px; line-height: 1;" class="align-middle">
-                                                        <td colspan="7" style="border: 1px solid black; padding: 2px 4px;">
-                                                            <t t-esc="order_groups[client_ref][product_name]['info_to_production']"/>
-                                                        </td>
-                                                    </tr>
-                                                    <tr style="border: 1px solid black; font-size: 16px; line-height: 1;" class="align-middle">
-                                                        <td style="border: 1px solid black; padding: 2px 4px;">No</td>
-                                                        <td style="border: 1px solid black; padding: 2px 4px; text-align: center">Keterangan</td>
-                                                        <td colspan="2" style="border: 1px solid black; padding: 2px 4px; text-align: center"></td>
-                                                        <td style="border: 1px solid black; padding: 2px 4px; text-align: center">Nomor Barcode</td>
-                                                        <td style="border: 1px solid black; padding: 2px 4px; text-align: center;">IN</td>
-                                                        <td style="border: 1px solid black; padding: 2px 4px; text-align: center;">OUT</td>
-                                                    </tr>
+                                            <t t-foreach="order_groups[client_ref]['products']" t-as="product_name">
+                                                <t t-if="order_groups[client_ref]['products'][product_name]['barcodes']">
                                                     <t t-set="counter" t-value="1"/>
-                                                    <t t-foreach="range(int(order_groups[client_ref][product_name]['qty']))" t-as="i">
+                                                    <t t-foreach="range(int(order_groups[client_ref]['products'][product_name]['qty']))" t-as="i">
                                                         <tr style="font-size: 16px; line-height: 1; vertical-align: middle">
-                                                            <td style="">
-                                                                <t t-esc="counter"/>
-                                                            </td>
-                                                            <td style="border-bottom: 1px solid black; text-align: center"></td>
-                                                            <td colspan="2" style=" text-align: center"></td>
-                                                            <td style="text-align: center; font-size: 17px">
-                                                                <t t-esc="order_groups[client_ref][product_name]['barcodes'][i] if len(order_groups[client_ref][product_name]['barcodes']) > i else '##'"/>
+                                                            <td style="font-size: 17px" colspan="3">
+                                                                <t t-esc="counter"/>. <t t-esc="order_groups[client_ref]['products'][product_name]['barcodes'][i] if len(order_groups[client_ref]['products'][product_name]['barcodes']) > i else '##'"/>
                                                             </td>
                                                             <td style="text-align: center;">
-                                                                <div style="display:inline-block; width:20px; height:20px; border:2px solid black; vertical-align:middle;"></div>
+                                                                9 Oct 25
                                                             </td>
                                                             <td style="text-align: center;">
-                                                                <div style="display:inline-block; width:20px; height:20px; border:2px solid black; vertical-align:middle;"></div>
+                                                            </td>
+                                                            <td style="text-align: center;">
+                                                                09:39:47
+                                                            </td>
+                                                            <td style="text-align: center;">
+                                                                OK
+                                                            </td>
+                                                            <td style="text-align: center; vertical-align: middle;">
+                                                                <div style="display:inline-block; width:20px; height:20px; border:2px solid black; vertical-align:middle;"></div> Packing Out
                                                             </td>
                                                         </tr>
                                                         <t t-set="counter" t-value="counter + 1"/>
                                                     </t>
                                                     <tr>
                                                         <td colspan="7" style="height: 15px"></td>
-                                                    </tr>
-                                                    <tr style="line-height: 1; vertical-align: middle;">
-                                                        <td colspan="4" style=" text-align: center"></td>
-                                                        <td style="text-align: right;  padding: 5px 5px; font-size: 17px; font-weight: 900">Total Produk In</td>
-                                                        <td style="border: 1px solid black; padding: 5px 5px; text-align: center;">
-                                                        </td>
-                                                        <td style="text-align: center;">
-                                                        </td>
                                                     </tr>
                                                     <tr>
                                                         <td colspan="7" style="height: 15px"></td>
@@ -191,19 +197,18 @@
                                     <tr>
                                         <td colspan="7" style="height: 15px; border-bottom: 2px solid black"></td>
                                     </tr>
-                                    <tr>
-                                        <td colspan="7" style="height: 15px"></td>
-                                    </tr>
-                                    <tr style="line-height: 1; vertical-align: middle;">
-                                        <td colspan="4" style=" text-align: center"></td>
-                                        <td style="text-align: right;  padding: 5px 5px; font-size: 17px; font-weight: 900">Total All Produk IN:</td>
-                                        <td style="border: 1px solid black; padding: 5px 5px; text-align: center;">
-                                                        </td>
-                                        <td style="text-align: center;">
-                                                        </td>
-                                    </tr>
                                 </tbody>
                             </table>
+
+
+
+
+
+
+
+
+
+
                             <h5 style="font-weight: bold; margin-top: 20px; page-break-before: always;">Extra Item :</h5>
                             <table class="table table-borderless" style="font-family: Arial; letter-spacing: 0.05em; table-layout: fixed; width: 100%; border-collapse: collapse;">
                                 <colgroup>
@@ -236,24 +241,6 @@
                                     </t>
                                     <tr>
                                         <td colspan="5" style="height: 15px"></td>
-                                    </tr>
-                                    <tr style="line-height: 1; vertical-align: middle;">
-                                        <td colspan="2" style=" text-align: center"></td>
-                                        <td style="text-align: right;  padding: 5px 5px; font-size: 17px; font-weight: 900">Total Produk In :</td>
-                                        <td style="border: 1px solid black; padding: 5px 5px; text-align: center;" colspan="2">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="7" style="height: 5px; border-bottom: 2px solid black"></td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="5" style="height: 5px"></td>
-                                    </tr>
-                                    <tr style="line-height: 1; vertical-align: middle;">
-                                        <td colspan="2" style=" text-align: center"></td>
-                                        <td style="text-align: right;  padding: 5px 5px; font-size: 25px; font-weight: 900">Grand Total In :</td>
-                                        <td style="border: 1px solid black; padding: 5px 5px; text-align: center;" colspan="2">
-                                        </td>
                                     </tr>
                                 </tbody>
                             </table>

@@ -172,9 +172,9 @@
                                                 <td style="border: 1px solid black; font-weight: 900; padding: 2px 4px;">
                                                     
                                                 </td>
-                                                <td style="border: 1px solid black; font-weight: 900; padding: 2px 4px;">
-                                                    30
-                                                </td>
+<td style="border: 1px solid black; font-weight: 900; padding: 2px 4px;">
+    <t t-esc="int(order_groups[client_ref]['products'][product_name]['qty'])"/>
+</td>
                                                 <td style="text-align: right; border: 1px solid black; font-weight: 900; padding: 2px 4px;">
                                                     0.0000
                                                 </td>

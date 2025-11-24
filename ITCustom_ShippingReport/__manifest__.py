@@ -15,6 +15,7 @@
         'reports/pre_shipping_report.xml',
         'reports/pre_shipping_no_image_m3.xml',
         'reports/invoice_m3.xml',
+        'reports/pre_stuffing_report.xml',
         'reports/report_actions.xml',
     ],
     'assets': {},

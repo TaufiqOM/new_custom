@@ -61,22 +61,23 @@
                                         <t t-set="sale_lines" t-value="move.picking_id.sale_id and move.picking_id.sale_id.order_line.filtered(lambda l: l.product_id == move.product_id) or []"/>
                                         <t t-set="info_to_production" t-value="sale_lines and sale_lines[0].info_to_production or '##'"/>
                                         <t t-if="product_name not in order_groups[client_ref]['products']">
-                                            <t t-set="order_groups" t-value="dict(order_groups, **{
-                                                client_ref: dict(order_groups[client_ref], **{
-                                                    'products': dict(order_groups[client_ref]['products'], **{
-                                                        product_name: {
-                                                            'qty': 0,
-                                                            'default_code': move.product_id.default_code or '##',
-                                                            'due_date': picking.sale_id.due_date_order or '##',
-                                                            'barcodes': [],
-                                                            'info_to_production': info_to_production,
-                                                            'total_height': sum(p.height for p in move.product_id.packaging_ids if p.height) or 0,
-                                                            'total_width': sum((p.width or 0) for p in move.product_id.packaging_ids) or 0,
-                                                            'total_length': sum((p.packaging_length or 0) for p in move.product_id.packaging_ids) or 0
-                                                        }
-                                                    })
-                                                })
-                                            })"/>
+<t t-set="order_groups" t-value="dict(order_groups, **{
+    client_ref: dict(order_groups[client_ref], **{
+        'products': dict(order_groups[client_ref]['products'], **{
+            product_name: {
+                'qty': 0,
+                'default_code': move.product_id.default_code or '##',
+                'due_date': picking.sale_id.due_date_order or '##',
+                'barcodes': [],
+                'info_to_production': info_to_production,
+                'total_height': sum(p.height for p in move.product_id.packaging_ids if p.height) or 0,
+                'total_width': sum((p.width or 0) for p in move.product_id.packaging_ids) or 0,
+                'total_length': sum((p.packaging_length or 0) for p in move.product_id.packaging_ids) or 0,
+                'm3': sum(p.cbm for p in move.product_id.packaging_ids) or 0
+            }
+        })
+    })
+})"/>
                                         </t>
                                         <t t-set="current" t-value="order_groups[client_ref]['products'][product_name]"/>
                                         <t t-set="new_barcodes" t-value="current['barcodes']"/>
@@ -85,22 +86,23 @@
                                                 <t t-set="new_barcodes" t-value="new_barcodes + [line.lot_id.name]"/>
                                             </t>
                                         </t>
-                                        <t t-set="order_groups" t-value="dict(order_groups, **{
-                                            client_ref: dict(order_groups[client_ref], **{
-                                                'products': dict(order_groups[client_ref]['products'], **{
-                                                    product_name: {
-                                                        'qty': current['qty'] + move.quantity,
-                                                        'default_code': current['default_code'],
-                                                        'due_date': current['due_date'],
-                                                        'barcodes': new_barcodes,
-                                                        'info_to_production': current['info_to_production'],
-                                                        'total_height': current['total_height'],
-                                                        'total_width': current['total_width'],
-                                                        'total_length': current['total_length']
-                                                    }
-                                                })
-                                            })
-                                        })"/>
+<t t-set="order_groups" t-value="dict(order_groups, **{
+    client_ref: dict(order_groups[client_ref], **{
+        'products': dict(order_groups[client_ref]['products'], **{
+            product_name: {
+                'qty': current['qty'] + move.quantity,
+                'default_code': current['default_code'],
+                'due_date': current['due_date'],
+                'barcodes': new_barcodes,
+                'info_to_production': current['info_to_production'],
+                'total_height': current['total_height'],
+                'total_width': current['total_width'],
+                'total_length': current['total_length'],
+                'm3': current['m3']
+            }
+        })
+    })
+})"/>
                                     </t>
                                 </t>
                             </t>
@@ -172,11 +174,11 @@
                                                 <td style="border: 1px solid black; font-weight: 900; padding: 2px 4px;">
                                                     
                                                 </td>
-<td style="border: 1px solid black; font-weight: 900; padding: 2px 4px;">
-    <t t-esc="int(order_groups[client_ref]['products'][product_name]['qty'])"/>
-</td>
+                                                <td style="border: 1px solid black; font-weight: 900; padding: 2px 4px;">
+                                                    <t t-esc="int(order_groups[client_ref]['products'][product_name]['qty'])"/>
+                                                </td>
                                                 <td style="text-align: right; border: 1px solid black; font-weight: 900; padding: 2px 4px;">
-                                                    0.0000
+                                                    <t t-esc="'%.4f' % (order_groups[client_ref]['products'][product_name]['m3'] * order_groups[client_ref]['products'][product_name]['qty'])"/>
                                                 </td>
                                                 <td style="text-align: right; border: 1px solid black; font-weight: 900; padding: 2px 4px;">
                                                     2.0184

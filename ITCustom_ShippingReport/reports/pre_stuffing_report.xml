@@ -10,7 +10,7 @@
                             <div class="oe_structure"/>
                             <div class="row">
                                 <div class="col-10">
-                                    <h2 style="font-weight: bold; margin-bottom: -3px;">Manual Stuffing Checklist PRE STUFFING</h2>
+                                    <h2 style="font-weight: bold; margin-bottom: -3px;">Pre Stuffing</h2>
                                     <h5 style="font-weight: bold; margin-bottom: -3px;">
                                         Customer :
                                         <span t-esc="doc.buyer.split('/')[0].strip() if doc.buyer else ''"/>
@@ -51,19 +51,19 @@
                             </div>
                             <t t-set="order_groups" t-value="{}"/>
                             <t t-foreach="doc.picking_ids" t-as="picking">
-                                <t t-if="picking.sale_id and picking.sale_id.client_order_ref">
-                                    <t t-set="client_ref" t-value="picking.sale_id.client_order_ref"/>
-                                    <t t-if="client_ref not in order_groups">
-                                        <t t-set="order_groups" t-value="dict(order_groups, **{client_ref: {'due_date_order': picking.sale_id.due_date_order, 'products': {}}})"/>
-                                    </t>
+                                <t t-if="picking.sale_id">
                                     <t t-foreach="picking.move_ids" t-as="move">
+                                        <t t-set="default_code" t-value="move.product_id.default_code or 'N/A'"/>
+                                        <t t-if="default_code not in order_groups">
+                                            <t t-set="order_groups" t-value="dict(order_groups, **{default_code: {'due_date_order': picking.sale_id.due_date_order, 'products': {}}})"/>
+                                        </t>
                                         <t t-set="product_name" t-value="move.product_id.name or 'N/A'"/>
                                         <t t-set="sale_lines" t-value="move.picking_id.sale_id and move.picking_id.sale_id.order_line.filtered(lambda l: l.product_id == move.product_id) or []"/>
                                         <t t-set="info_to_production" t-value="sale_lines and sale_lines[0].info_to_production or '##'"/>
-                                        <t t-if="product_name not in order_groups[client_ref]['products']">
-<t t-set="order_groups" t-value="dict(order_groups, **{
-    client_ref: dict(order_groups[client_ref], **{
-        'products': dict(order_groups[client_ref]['products'], **{
+<t t-if="product_name not in order_groups[default_code]['products']">
+    <t t-set="order_groups" t-value="dict(order_groups, **{
+default_code: dict(order_groups[default_code], **{
+'products': dict(order_groups[default_code]['products'], **{
             product_name: {
                 'qty': 0,
                 'default_code': move.product_id.default_code or '##',
@@ -79,29 +79,29 @@
     })
 })"/>
                                         </t>
-                                        <t t-set="current" t-value="order_groups[client_ref]['products'][product_name]"/>
-                                        <t t-set="new_barcodes" t-value="current['barcodes']"/>
-                                        <t t-foreach="move.move_line_ids" t-as="line">
-                                            <t t-if="line.lot_id">
-                                                <t t-set="new_barcodes" t-value="new_barcodes + [line.lot_id.name]"/>
-                                            </t>
-                                        </t>
+<t t-set="current" t-value="order_groups[default_code]['products'][product_name]"/>
+<t t-set="new_barcodes" t-value="current['barcodes']"/>
+<t t-foreach="move.move_line_ids" t-as="line">
+    <t t-if="line.lot_id">
+        <t t-set="new_barcodes" t-value="new_barcodes + [line.lot_id.name]"/>
+    </t>
+</t>
 <t t-set="order_groups" t-value="dict(order_groups, **{
-    client_ref: dict(order_groups[client_ref], **{
-        'products': dict(order_groups[client_ref]['products'], **{
-            product_name: {
-                'qty': current['qty'] + move.quantity,
-                'default_code': current['default_code'],
-                'due_date': current['due_date'],
-                'barcodes': new_barcodes,
-                'info_to_production': current['info_to_production'],
-                'total_height': current['total_height'],
-                'total_width': current['total_width'],
-                'total_length': current['total_length'],
-                'm3': current['m3']
-            }
-        })
+default_code: dict(order_groups[default_code], **{
+    'products': dict(order_groups[default_code]['products'], **{
+        product_name: {
+            'qty': current['qty'] + move.quantity,
+            'default_code': current['default_code'],
+            'due_date': current['due_date'],
+            'barcodes': new_barcodes,
+            'info_to_production': current['info_to_production'],
+            'total_height': current['total_height'],
+            'total_width': current['total_width'],
+            'total_length': current['total_length'],
+            'm3': current['m3']
+        }
     })
+})
 })"/>
                                     </t>
                                 </t>
@@ -143,104 +143,146 @@
                                                 <t t-set="has_barcodes" t-value="True"/>
                                             </t>
                                         </t>
-                                        <t t-if="has_barcodes">
-                                            <tr style="background-color: #a0a0a0; color: black; border: 1px solid black; font-size: 14px; line-height: 1;" class="align-middle">
-                                                <td style="border: 1px solid black; font-weight: 900; padding: 2px 4px;">
-                                                    <t t-esc="client_ref"/>
-                                                </td>
-                                                <td style="border: 1px solid black; font-weight: 900; padding: 2px 4px;" colspan="6">
-                                                    <t t-esc="product_name"/>
-                                                </td>
-                                                <td style="border: 1px solid black; font-weight: 900; padding: 2px 4px; text-align: center;">
-                                                    <span style="font-weight: bold; font-size: 13px;">
-                                                        <t t-esc="'%.1f' % order_groups[client_ref]['products'][product_name].get('total_height', 0)"/> X
-                                                        <t t-esc="'%.1f' % order_groups[client_ref]['products'][product_name].get('total_width', 0)"/> X
-                                                        <t t-esc="'%.1f' % order_groups[client_ref]['products'][product_name].get('total_length', 0)"/>
-                                                    </span>
-                                                </td>
-                                                <td style="border: 1px solid black; font-weight: 900; padding: 2px 4px;">
-                                                </td>
-                                            </tr>
-                                            <tr style="border: 1px solid black; font-size: 14px; line-height: 1;" class="align-middle">
-                                            <td style="border: 1px solid black; font-weight: 900; padding: 2px 4px;">
-                                                <t t-esc="order_groups[client_ref]['products'][product_name]['due_date'].strftime('%d %b %y') if order_groups[client_ref]['products'][product_name]['due_date'] else '##'"/>
-                                            </td>
-                                                <td style="border: 1px solid black; font-weight: 900; padding: 2px 4px;">
-                                                    165314
-                                                </td>
-                                                <td style="border: 1px solid black; font-weight: 900; padding: 2px 4px;">
-                                                    FRE
-                                                </td>
-                                                <td style="border: 1px solid black; font-weight: 900; padding: 2px 4px;">
-                                                    
-                                                </td>
-                                                <td style="border: 1px solid black; font-weight: 900; padding: 2px 4px;">
-                                                    <t t-esc="int(order_groups[client_ref]['products'][product_name]['qty'])"/>
-                                                </td>
-                                                <td style="text-align: right; border: 1px solid black; font-weight: 900; padding: 2px 4px;">
-                                                    <t t-esc="'%.4f' % (order_groups[client_ref]['products'][product_name]['m3'] * order_groups[client_ref]['products'][product_name]['qty'])"/>
-                                                </td>
-                                                <td style="text-align: right; border: 1px solid black; font-weight: 900; padding: 2px 4px;">
-                                                    2.0184
-                                                </td>
-                                                <td style="text-align: right; border: 1px solid black; font-weight: 900; padding: 2px 4px;">
-                                                </td>
-                                                <td style="border: 1px solid black; font-weight: 900; padding: 2px 4px;">
-                                                    NBL, PR-
-                                                    1* TOP
-                                                    URGENT
-                                                </td>
-                                            </tr>
-                                            <t t-foreach="order_groups[client_ref]['products']" t-as="product_name">
-                                                <t t-if="order_groups[client_ref]['products'][product_name]['barcodes']">
-                                                    <t t-set="counter" t-value="1"/>
-                                                    <t t-foreach="range(int(order_groups[client_ref]['products'][product_name]['qty']))" t-as="i">
-                                                        <tr style="font-size: 16px; line-height: 1; vertical-align: middle">
-                                                            <td style="font-size:17px" colspan="3">
-                                                                <span style="display:inline-block; width:25px; text-align:right;">
-                                                                    <t t-esc="counter"/>
-                                                                </span>. 
-                                                                <t t-esc="order_groups[client_ref]['products'][product_name]['barcodes'][i] if len(order_groups[client_ref]['products'][product_name]['barcodes']) > i else '##'"/>
-                                                            </td>
-                                                            <td style="text-align: center;">
-                                                                9 Oct 25
-                                                            </td>
-                                                            <td style="text-align: center;">
-                                                            </td>
-                                                            <td style="text-align: center;">
-                                                                09:39:47
-                                                            </td>
-                                                            <td style="text-align: center;">
-                                                                OK
-                                                            </td>
-                                                            <td style="text-align: center; vertical-align: middle;">
-                                                                <div style="display:inline-block; width:20px; height:20px; border:2px solid black; vertical-align:middle;"></div> Packing Out
-                                                            </td>
-                                                        </tr>
-                                                        <t t-set="counter" t-value="counter + 1"/>
-                                                    </t>
-                                                    <tr>
-                                                        <td colspan="7" style="height: 15px"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colspan="7" style="height: 15px"></td>
-                                                    </tr>
-                                                </t>
-                                            </t>
+<t t-if="has_barcodes">
+    <t t-if="len(order_groups[client_ref]['products']) == 1">
+        <tr style="background-color: #a0a0a0; color: black; border: 1px solid black; font-size: 14px; line-height: 1;" class="align-middle">
+            <td style="border: 1px solid black; font-weight: 900; padding: 2px 4px;">
+                <t t-esc="client_ref"/>
+            </td>
+            <td style="border: 1px solid black; font-weight: 900; padding: 2px 4px;" colspan="6">
+                <t t-esc="product_name"/>
+            </td>
+            <td style="border: 1px solid black; font-weight: 900; padding: 2px 4px; text-align: center;">
+                <span style="font-weight: bold; font-size: 13px;">
+                    <t t-esc="'%.1f' % order_groups[client_ref]['products'][product_name].get('total_height', 0)"/> X
+                    <t t-esc="'%.1f' % order_groups[client_ref]['products'][product_name].get('total_width', 0)"/> X
+                    <t t-esc="'%.1f' % order_groups[client_ref]['products'][product_name].get('total_length', 0)"/>
+                </span>
+            </td>
+            <td style="border: 1px solid black; font-weight: 900; padding: 2px 4px;">
+            </td>
+        </tr>
+        <tr style="border: 1px solid black; font-size: 14px; line-height: 1;" class="align-middle">
+            <td style="border: 1px solid black; font-weight: 900; padding: 2px 4px;">
+                <t t-esc="order_groups[client_ref]['products'][product_name]['due_date'].strftime('%d %b %y') if order_groups[client_ref]['products'][product_name]['due_date'] else '##'"/>
+            </td>
+<td style="border: 1px solid black; font-weight: 900; padding: 2px 4px;">
+    <t t-esc="order_groups[client_ref]['products'][product_name]['barcodes'][0].split('-')[0] if order_groups[client_ref]['products'][product_name]['barcodes'] else 'N/A'"/>
+</td>
+            <td style="border: 1px solid black; font-weight: 900; padding: 2px 4px;">
+                FRE
+            </td>
+            <td style="border: 1px solid black; font-weight: 900; padding: 2px 4px;">
+                color
+            </td>
+            <td style="border: 1px solid black; font-weight: 900; padding: 2px 4px;">
+                <t t-esc="int(order_groups[client_ref]['products'][product_name]['qty'])"/>
+            </td>
+            <td style="text-align: right; border: 1px solid black; font-weight: 900; padding: 2px 4px;">
+                <t t-esc="'%.4f' % (order_groups[client_ref]['products'][product_name]['m3'] * order_groups[client_ref]['products'][product_name]['qty'])"/>
+            </td>
+            <td style="text-align: right; border: 1px solid black; font-weight: 900; padding: 2px 4px;">
+                2.0184
+            </td>
+            <td style="text-align: right; border: 1px solid black; font-weight: 900; padding: 2px 4px;">
+            </td>
+            <td style="border: 1px solid black; font-weight: 900; padding: 2px 4px;">
+                NBL, PR-
+                1* TOP
+                URGENT
+            </td>
+        </tr>
+    </t>
+    <t t-foreach="order_groups[client_ref]['products']" t-as="product_name">
+        <t t-if="order_groups[client_ref]['products'][product_name]['barcodes']">
+            <t t-set="counter" t-value="1"/>
+            <!-- Repeat the header above barcode if more than one product exists -->
+            <t t-if="len(order_groups[client_ref]['products']) > 1">
+                <tr style="background-color: #a0a0a0; color: black; border: 1px solid black; font-size: 14px; line-height: 1;" class="align-middle">
+                    <td style="border: 1px solid black; font-weight: 900; padding: 2px 4px;">
+                        <t t-esc="client_ref"/>
+                    </td>
+                    <td style="border: 1px solid black; font-weight: 900; padding: 2px 4px;" colspan="6">
+                        <t t-esc="product_name"/>
+                    </td>
+                    <td style="border: 1px solid black; font-weight: 900; padding: 2px 4px; text-align: center;">
+                        <span style="font-weight: bold; font-size: 13px;">
+                            <t t-esc="'%.1f' % order_groups[client_ref]['products'][product_name].get('total_height', 0)"/> X
+                            <t t-esc="'%.1f' % order_groups[client_ref]['products'][product_name].get('total_width', 0)"/> X
+                            <t t-esc="'%.1f' % order_groups[client_ref]['products'][product_name].get('total_length', 0)"/>
+                        </span>
+                    </td>
+                    <td style="border: 1px solid black; font-weight: 900; padding: 2px 4px;">
+                    </td>
+                </tr>
+                <tr style="border: 1px solid black; font-size: 14px; line-height: 1;" class="align-middle">
+                    <td style="border: 1px solid black; font-weight: 900; padding: 2px 4px;">
+                        <t t-esc="order_groups[client_ref]['products'][product_name]['due_date'].strftime('%d %b %y') if order_groups[client_ref]['products'][product_name]['due_date'] else '##'"/>
+                    </td>
+<td style="border: 1px solid black; font-weight: 900; padding: 2px 4px;">
+    <t t-esc="order_groups[client_ref]['products'][product_name]['barcodes'][0].split('-')[0] if order_groups[client_ref]['products'][product_name]['barcodes'] else 'N/A'"/>
+</td>
+                    <td style="border: 1px solid black; font-weight: 900; padding: 2px 4px;">
+                        FRE
+                    </td>
+                    <td style="border: 1px solid black; font-weight: 900; padding: 2px 4px;">
+                        
+                    </td>
+                    <td style="border: 1px solid black; font-weight: 900; padding: 2px 4px;">
+                        <t t-esc="int(order_groups[client_ref]['products'][product_name]['qty'])"/>
+                    </td>
+                    <td style="text-align: right; border: 1px solid black; font-weight: 900; padding: 2px 4px;">
+                        <t t-esc="'%.4f' % (order_groups[client_ref]['products'][product_name]['m3'] * order_groups[client_ref]['products'][product_name]['qty'])"/>
+                    </td>
+                    <td style="text-align: right; border: 1px solid black; font-weight: 900; padding: 2px 4px;">
+                        2.0184
+                    </td>
+                    <td style="text-align: right; border: 1px solid black; font-weight: 900; padding: 2px 4px;">
+                    </td>
+                    <td style="border: 1px solid black; font-weight: 900; padding: 2px 4px;">
+                        NBL, PR-
+                        1* TOP
+                        URGENT
+                    </td>
+                </tr>
+            </t>
+            <t t-foreach="range(int(order_groups[client_ref]['products'][product_name]['qty']))" t-as="i">
+                <tr style="font-size: 16px; line-height: 1; vertical-align: middle">
+                    <td style="font-size:17px" colspan="3">
+                        <span style="display:inline-block; width:25px; text-align:right;">
+                            <t t-esc="counter"/>
+                        </span>.
+                        <t t-esc="order_groups[client_ref]['products'][product_name]['barcodes'][i] if len(order_groups[client_ref]['products'][product_name]['barcodes']) > i else '##'"/>
+                    </td>
+                    <td style="text-align: center;">
+                        9 Oct 25
+                    </td>
+                    <td style="text-align: center;">
+                    </td>
+                    <td style="text-align: center;">
+                        09:39:47
+                    </td>
+                    <td style="text-align: center;">
+                        OK
+                    </td>
+                    <td style="text-align: center; vertical-align: middle;">
+                        <div style="display:inline-block; width:20px; height:20px; border:2px solid black; vertical-align:middle;"></div> Packing Out
+                    </td>
+                </tr>
+                <t t-set="counter" t-value="counter + 1"/>
+            </t>
+            <tr>
+                <td colspan="7" style="height: 15px"></td>
+            </tr>
+            <tr>
+                <td colspan="7" style="height: 15px"></td>
+            </tr>
+        </t>
+    </t>
                                         </t>
                                     </t>
                                 </tbody>
                             </table>
-
-
-
-
-
-
-
-
-
-
                             <h5 style="font-weight: bold; margin-top: 20px; page-break-before: always;">Extra Item :</h5>
                             <table class="table table-borderless" style="font-family: Arial; letter-spacing: 0.05em; table-layout: fixed; width: 100%; border-collapse: collapse;">
                                 <colgroup>

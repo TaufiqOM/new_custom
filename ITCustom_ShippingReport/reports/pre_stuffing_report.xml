@@ -59,7 +59,8 @@
                                         </t>
                                         <t t-set="product_name" t-value="move.product_id.name or 'N/A'"/>
                                         <t t-set="sale_lines" t-value="move.picking_id.sale_id and move.picking_id.sale_id.order_line.filtered(lambda l: l.product_id == move.product_id) or []"/>
-                                        <t t-set="info_to_production" t-value="sale_lines and sale_lines[0].info_to_production or '##'"/>
+<t t-set="info_to_production" t-value="sale_lines and sale_lines[0].info_to_production or '##'"/>
+<t t-set="finish_product" t-value="sale_lines and (sale_lines[0].finish_product and {'name': sale_lines[0].finish_product.name, 'code': '[' + sale_lines[0].finish_product.code + ']'} or {'name': '', 'code': ''}) or {'name': '', 'code': ''}"/>
 <t t-if="product_name not in order_groups[default_code]['products']">
     <t t-set="order_groups" t-value="dict(order_groups, **{
 default_code: dict(order_groups[default_code], **{
@@ -70,6 +71,7 @@ default_code: dict(order_groups[default_code], **{
                 'due_date': picking.sale_id.due_date_order or '##',
                 'barcodes': [],
                 'info_to_production': info_to_production,
+                'finish_product': finish_product,
                 'total_height': sum(p.height for p in move.product_id.packaging_ids if p.height) or 0,
                 'total_width': sum((p.width or 0) for p in move.product_id.packaging_ids) or 0,
                 'total_length': sum((p.packaging_length or 0) for p in move.product_id.packaging_ids) or 0,
@@ -95,6 +97,7 @@ default_code: dict(order_groups[default_code], **{
             'due_date': current['due_date'],
             'barcodes': new_barcodes,
             'info_to_production': current['info_to_production'],
+            'finish_product': current.get('finish_product', '') or finish_product,
             'total_height': current['total_height'],
             'total_width': current['total_width'],
             'total_length': current['total_length'],
@@ -172,9 +175,11 @@ default_code: dict(order_groups[default_code], **{
             <td style="border: 1px solid black; font-weight: 900; padding: 2px 4px;">
                 FRE
             </td>
-            <td style="border: 1px solid black; font-weight: 900; padding: 2px 4px;">
-                color
-            </td>
+<td style="border: 1px solid black; font-weight: 900; padding: 2px 4px;">
+    <t t-esc="order_groups[client_ref]['products'][product_name]['finish_product']['name']"/>
+    <br/>
+    <t t-esc="order_groups[client_ref]['products'][product_name]['finish_product']['code']"/>
+</td>
             <td style="border: 1px solid black; font-weight: 900; padding: 2px 4px;">
                 <t t-esc="int(order_groups[client_ref]['products'][product_name]['qty'])"/>
             </td>
